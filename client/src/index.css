@@ -1,0 +1,413 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ====================================================================
+   MOBIXA — Strict Design System
+   Color: #0F172A · Spacing: 4px grid · Font: Inter
+   ==================================================================== */
+
+@layer base {
+  :root {
+    /* Colors */
+    --color-primary:        #0F172A;
+    --color-bg:             #FFFFFF;
+    --color-bg-soft:        #F8FAFC;
+    --color-text-primary:   #0F172A;
+    --color-text-secondary: #64748B;
+    --color-text-muted:     #94A3B8;
+    --color-border:         #E2E8F0;
+    --color-success:        #16A34A;
+
+    /* Spacing (4px grid) */
+    --space-xs:  4px;
+    --space-sm:  8px;
+    --space-md:  16px;
+    --space-lg:  24px;
+    --space-xl:  32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+
+    /* Border radius - Conservative modern feel */
+    --radius-sm:  4px;
+    --radius-md:  8px;
+    --radius-lg:  12px;
+    --radius-xl:  16px;
+    --radius-2xl: 20px;
+
+    /* Easing */
+    --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-in:  cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #FFFFFF;
+    color: #0F172A;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    line-height: 1.6;
+    font-feature-settings: 'cv11', 'ss01';
+    overflow-x: hidden;
+  }
+
+  /* Dark mode base */
+  .dark body {
+    background-color: #09090b;
+    color: #ffffff;
+  }
+
+  /* Only transition color-related props to avoid layout jank */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform;
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+  }
+
+  /* Typography reset */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #0F172A;
+    margin: 0;
+  }
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 { color: #fff; }
+
+  p { color: #64748B; margin: 0; }
+  .dark p { color: rgba(255,255,255,0.5); }
+  a { text-decoration: none; color: inherit; }
+
+  ::selection {
+    background-color: rgba(15, 23, 42, 0.1);
+    color: #0F172A;
+  }
+}
+
+/* ── Typography Utility Classes ───────────────────────────────── */
+@layer components {
+  /* Headings */
+  .heading-1 {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: #0F172A;
+  }
+  .heading-2 {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #0F172A;
+  }
+  .heading-3 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: #0F172A;
+  }
+
+  /* Body */
+  .body-lg  { font-size: 16px; line-height: 1.6; color: #64748B; }
+  .body-md  { font-size: 14px; line-height: 1.6; color: #64748B; }
+  .body-sm  { font-size: 12px; line-height: 1.5; color: #94A3B8; }
+
+  /* Labels / caps */
+  .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #94A3B8;
+  }
+
+  /* ── Button Primitives ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: var(--radius-lg);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.2s ease-out;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .btn:hover { transform: scale(1.02); }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+  .btn-primary {
+    background-color: #0F172A;
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(15,23,42,0.15);
+  }
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-secondary {
+    background-color: #F1F5F9;
+    color: #0F172A;
+    border: 1px solid #E2E8F0;
+  }
+  .btn-secondary:hover { background-color: #E2E8F0; }
+
+  /* ── Glass Card ── */
+  .card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    transition: all 0.2s ease-out;
+  }
+  .card:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transform: translateY(-2px) scale(1.01);
+  }
+  .dark .card {
+    background: rgba(20, 20, 20, 0.7);
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  }
+  .dark .card:hover {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.8);
+  }
+
+  /* ── Input ── */
+  .form-input {
+    width: 100%;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: var(--radius-md);       /* 10px */
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #0F172A;
+    outline: none;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+    font-family: inherit;
+  }
+  .form-input::placeholder { color: #94A3B8; }
+  .form-input:focus {
+    border-color: #0F172A;
+    box-shadow: 0 0 0 3px rgba(15,23,42,0.06);
+  }
+  .dark .form-input {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.08);
+    color: #ffffff;
+  }
+  .dark .form-input:focus { border-color: rgba(255,255,255,0.3); box-shadow: 0 0 0 3px rgba(255,255,255,0.04); }
+
+  /* ── Section container ── */
+  .section {
+    padding: 64px 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-sm { padding: 32px 1rem; }
+
+  .container-custom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+  }
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────── */
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #E2E8F0;
+    border-radius: 99px;
+  }
+
+  /* ── Glass Utilities ── */
+  .glass-panel {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 8px 32px -8px rgba(0,0,0,0.08);
+  }
+  .dark .glass-panel {
+    background: rgba(15, 15, 15, 0.7);
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px -8px rgba(0,0,0,0.6);
+  }
+  
+  .glass-nav {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+  .dark .glass-nav {
+    background: rgba(9, 9, 11, 0.85);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* ── Focus ring (accessibility) ────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #0F172A;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Swiper pagination ─────────────────────────────────────────── */
+.swiper-pagination-bullet {
+  width: 6px !important;
+  height: 6px !important;
+  background: #CBD5E1 !important;
+  opacity: 1 !important;
+  border-radius: 99px !important;
+  transition: width 0.3s ease, background 0.3s ease !important;
+}
+.swiper-pagination-bullet-active {
+  width: 20px !important;
+  background: #0F172A !important;
+}
+
+/* ── Brand Marquee ─────────────────────────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.brand-marquee {
+  animation: marquee 38s linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover of any descendant OR the track itself */
+.brand-marquee:hover,
+.brand-marquee:focus-within {
+  animation-play-state: paused;
+}
+
+/* ── Reverse marquee (Row 2 — scrolls right) ────────────────────── */
+@keyframes marquee-reverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.brand-marquee-reverse {
+  animation: marquee-reverse 38s linear infinite;
+  will-change: transform;
+}
+
+.brand-marquee-reverse:hover,
+.brand-marquee-reverse:focus-within {
+  animation-play-state: paused;
+}
+
+/* ── Skeleton shimmer ───────────────────────────────────────────────── */
+@keyframes shimmer-sweep {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f1f5f9 25%,
+    #e2e8f0 50%,
+    #f1f5f9 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-sweep 1.6s ease-in-out infinite;
+}
+
+.dark .skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.04) 25%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.04) 75%
+  );
+  background-size: 200% 100%;
+}
+
+/* ── Custom Animations ─────────────────────────────────────────────────── */
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.2s ease-out;
+}
+
+/* 🚀 MOBILE PERFORMANCE KILLER */
+@media (max-width: 768px) {
+  * {
+    animation: none !important;
+    transition: all 0.15s ease-out !important;
+  }
+  .card:hover { transform: none !important; }
+}
+
+/* --- Premium Shimmer Skeleton Animation --- */
+@keyframes shimmerAnim {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+
+.dark .shimmer-effect {
+  background: #18181b;
+}
+
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmerAnim 1.8s infinite ease-in-out;
+}
+
+.dark .shimmer-effect::after {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
