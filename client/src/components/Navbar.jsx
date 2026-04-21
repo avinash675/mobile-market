@@ -24,6 +24,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  
+  console.log("Navbar user data:", user);
   const cartCount = cart.reduce((n, i) => n + i.quantity, 0);
 
   React.useEffect(() => {
@@ -115,9 +117,15 @@ const Navbar = () => {
               >
                 <ShoppingCart size={18} strokeWidth={1.5} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-blue-500 text-white text-[9px] font-bold flex items-center justify-center rounded-full">
+                  <motion.span 
+                    key={cartCount}
+                    initial={{ scale: 0.5, y: -5 }}
+                    animate={{ scale: 1, y: 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                    className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-blue-500 text-white text-[9px] font-bold flex items-center justify-center rounded-full"
+                  >
                     {cartCount}
-                  </span>
+                  </motion.span>
                 )}
               </motion.button>
 
@@ -134,8 +142,8 @@ const Navbar = () => {
                       className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-500/10 transition-colors duration-300 text-text-primary dark:text-white overflow-hidden border border-blue-500/20"
                       aria-label="Account Menu"
                     >
-                      {user.avatar ? (
-                        <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                      {user.profileImage ? (
+                        <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-blue-600 text-white text-xs font-black italic">
                           {user.name?.charAt(0) || 'A'}
@@ -303,9 +311,15 @@ const Navbar = () => {
           <button onClick={() => setIsCartOpen(true)} className="relative flex flex-col items-center gap-1 text-text-secondary dark:text-gray-400 hover:text-text-primary dark:hover:text-white active:scale-95 transition-all">
             <ShoppingCart size={22} strokeWidth={1.5} />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1.5 w-4 h-4 bg-text-primary dark:bg-white text-white dark:text-[#09090b] text-[9px] font-bold flex items-center justify-center rounded-full border border-white dark:border-[#141414]">
+              <motion.span 
+                key={cartCount}
+                initial={{ scale: 0.5, y: -5 }}
+                animate={{ scale: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                className="absolute -top-1 -right-1.5 w-4 h-4 bg-text-primary dark:bg-white text-white dark:text-[#09090b] text-[9px] font-bold flex items-center justify-center rounded-full border border-white dark:border-[#141414]"
+              >
                 {cartCount}
-              </span>
+              </motion.span>
             )}
           </button>
 
@@ -323,8 +337,8 @@ const Navbar = () => {
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex flex-col items-center gap-1 text-text-secondary dark:text-gray-400 hover:text-text-primary dark:hover:text-white active:scale-95 transition-all"
                 >
-                  {user.avatar ? (
-                    <img src={user.avatar} alt="Profile" className="w-6 h-6 rounded-full object-cover border border-blue-500/20" />
+                  {user.profileImage ? (
+                    <img src={user.profileImage} alt="Profile" className="w-6 h-6 rounded-full object-cover border border-blue-500/20" />
                   ) : (
                     <div className="w-6 h-6 rounded-full bg-blue-600 text-white text-[10px] font-black italic flex items-center justify-center">
                       {user.name?.charAt(0) || 'A'}

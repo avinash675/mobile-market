@@ -6,6 +6,89 @@ import { useAppContext } from '../context/AppContext';
 
 const ease = [0.16, 1, 0.3, 1];
 
+const playPremiumChime = () => {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    
+    // Premium Minimal Bell
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1046.50, ctx.currentTime); // C6
+    
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 1.2);
+  } catch (e) {
+    // Silently fail if audio context is blocked
+  }
+};
+
+const AuthSplash = () => {
+  React.useEffect(() => {
+    playPremiumChime();
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 1.02 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="fixed inset-0 z-[9999] bg-[#050505] flex items-center justify-center overflow-hidden touch-none"
+    >
+      {/* Background ambient glow with slow shift */}
+      <motion.div 
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1, duration: 1 }}
+      >
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        >
+          <div className="w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] bg-indigo-500/[0.03] rounded-full blur-[100px] absolute -translate-y-10 translate-x-10 mix-blend-screen" />
+          <div className="w-[40vw] h-[40vw] max-w-[400px] max-h-[400px] bg-fuchsia-500/[0.02] rounded-full blur-[80px] absolute translate-y-10 -translate-x-10 mix-blend-screen" />
+        </motion.div>
+      </motion.div>
+
+      <motion.div
+        className="relative z-10"
+        initial={{ scale: 0.96, opacity: 0, y: 3 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ 
+          delay: 0.3,
+          duration: 0.8,
+          ease: [0.22, 1, 0.36, 1] // Smooth settle, no bounce
+        }}
+      >
+        <motion.span 
+          className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-tr from-[#E2E8F0] via-[#FFFFFF] to-[#C7D2FE]"
+          animate={{
+            textShadow: [
+              "0px 0px 0px rgba(255,255,255,0)",
+              "0px 0px 30px rgba(167,139,250,0.15)",
+              "0px 0px 10px rgba(167,139,250,0.05)"
+            ]
+          }}
+          transition={{ duration: 1.7, delay: 0.3, times: [0, 0.4, 1], ease: "easeInOut" }}
+        >
+          Mobixa.
+        </motion.span>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 const Field = ({ label, type = 'text', placeholder, value, onChange, name, error }) => {
   const [show, setShow] = useState(false);
   const isPassword = type === 'password';
@@ -54,6 +137,8 @@ const Field = ({ label, type = 'text', placeholder, value, onChange, name, error
 export const LoginForm = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
   
   const navigate = useNavigate();
   const { login } = useAppContext();
@@ -63,13 +148,31 @@ export const LoginForm = () => {
   const handleSubmit = async (e) => { 
     e.preventDefault(); 
     setError('');
+    setIsLoading(true);
     
     try {
-      const storedUserJSON = localStorage.getItem("mobixa_user");
-      if (storedUserJSON) {
-        const storedUser = JSON.parse(storedUserJSON);
-        if (storedUser.email === form.email && storedUser.password === form.password) {
-          login(storedUser); // 🔥 triggers instant UI reactive update
+      // Simulate network delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 600));
+
+      const emailLower = form.email.trim().toLowerCase();
+      console.log("Login Input:", emailLower, form.password);
+      
+      // Fetch stored users
+      const storedUsersJSON = localStorage.getItem("mobixa_users");
+      const storedUsers = storedUsersJSON ? JSON.parse(storedUsersJSON) : [];
+      console.log("Users list:", storedUsers);
+
+      const foundUser = storedUsers.find(
+        u => u.email.toLowerCase() === emailLower && u.password === form.password
+      );
+
+      if (foundUser) {
+        console.log("Logged in user:", foundUser);
+        // Login success
+        login(foundUser); // Updates context and mobixa_user session
+        setShowSplash(true);
+        
+        setTimeout(() => {
           const redirectPath = localStorage.getItem('redirect_after_login');
           if (redirectPath) {
             localStorage.removeItem('redirect_after_login');
@@ -77,17 +180,23 @@ export const LoginForm = () => {
           } else {
             navigate("/");
           }
-          return;
-        }
+        }, 2000);
+      } else {
+        setError('Account not found. Please check email or sign up.');
       }
-      setError('Invalid credentials or please signup first');
     } catch (err) {
+      console.error(err);
       setError('An error occurred during local login.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <>
+      <AnimatePresence>
+        {showSplash && <AuthSplash />}
+      </AnimatePresence>
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -133,10 +242,11 @@ export const LoginForm = () => {
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             type="submit"
-            className="w-full bg-[#09090b] dark:bg-white text-white dark:text-[#09090b] py-4 rounded-2xl font-bold text-sm hover:opacity-90 transition-opacity group flex items-center justify-center gap-2"
+            disabled={isLoading}
+            className="w-full bg-[#09090b] dark:bg-white text-white dark:text-[#09090b] py-4 rounded-2xl font-bold text-sm hover:opacity-90 transition-opacity group flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Sign In
-            <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+            {isLoading ? "Signing In..." : "Sign In"}
+            {!isLoading && <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />}
           </motion.button>
         </form>
 
@@ -153,6 +263,8 @@ export const SignupForm = () => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirm: '' });
   const [errors, setErrors] = useState({});
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useAppContext(); // Brought in to update Global User Context
@@ -220,28 +332,60 @@ export const SignupForm = () => {
     
     if (!validate()) return;
 
+    setIsLoading(true);
     try {
+      // Simulate network delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 600));
+
+      const emailLower = form.email.trim().toLowerCase();
+      
+      const storedUsersJSON = localStorage.getItem("mobixa_users");
+      const storedUsers = storedUsersJSON ? JSON.parse(storedUsersJSON) : [];
+      
+      // Check for duplicate signup
+      if (storedUsers.some(u => u.email.toLowerCase() === emailLower)) {
+        setError('User with this email already exists.');
+        return;
+      }
+
       const userData = {
-        name: form.name,
-        email: form.email,
-        phone: form.phone,
-        password: form.password,
-        isAdmin: false
+        name: form.name.trim(),
+        email: emailLower,
+        phone: form.phone.trim(),
+        password: form.password, // Ideally hashed, kept plaintext here for pure frontend demo
+        isAdmin: false,
+        profileImage: null
       };
       
-      // Save locally without backend
+      // Store in users database array
+      storedUsers.push(userData);
+      localStorage.setItem("mobixa_users", JSON.stringify(storedUsers));
+      console.log("Stored Users after signup:", storedUsers);
+      
+      // Set current session
       localStorage.setItem("mobixa_user", JSON.stringify(userData));
       login(userData); // 🔥 instant UI update
       
-      navigate("/");
+      setShowSplash(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+      
     } catch (err) {
+      console.error(err);
       setError('An error occurred during local signup.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
+      <>
+        <AnimatePresence>
+          {showSplash && <AuthSplash />}
+        </AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease }}
         className="w-full max-w-md"
@@ -284,10 +428,11 @@ export const SignupForm = () => {
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             type="submit"
-            className="w-full bg-[#09090b] dark:bg-white text-white dark:text-[#09090b] py-4 rounded-2xl font-bold text-sm hover:opacity-90 transition-opacity group flex items-center justify-center gap-2"
+            disabled={isLoading}
+            className="w-full bg-[#09090b] dark:bg-white text-white dark:text-[#09090b] py-4 rounded-2xl font-bold text-sm hover:opacity-90 transition-opacity group flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Create Account
-            <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+            {isLoading ? "Creating Account..." : "Create Account"}
+            {!isLoading && <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />}
           </motion.button>
         </form>
 
@@ -296,6 +441,7 @@ export const SignupForm = () => {
           <Link to="/login" className="text-accent font-bold hover:opacity-80 transition-opacity">Sign in</Link>
         </p>
       </motion.div>
+      </>
   );
 };
 

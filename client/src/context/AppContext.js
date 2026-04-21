@@ -169,7 +169,25 @@ export const AppProvider = ({ children }) => {
       updateUser: (updates) => {
         setUser(prev => {
           const updated = { ...prev, ...updates };
+          
+          // 1. Update current session
           localStorage.setItem('mobixa_user', JSON.stringify(updated));
+          
+          // 2. Sync to the permanent user database array
+          try {
+            const usersDBStr = localStorage.getItem('mobixa_users');
+            if (usersDBStr) {
+               const usersDB = JSON.parse(usersDBStr);
+               const index = usersDB.findIndex(u => u.email === updated.email);
+               if (index !== -1) {
+                  usersDB[index] = updated;
+                  localStorage.setItem('mobixa_users', JSON.stringify(usersDB));
+               }
+            }
+          } catch(err) {
+            console.error("Failed to sync user to DB", err);
+          }
+          
           return updated;
         });
       },

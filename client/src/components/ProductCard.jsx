@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, ShoppingCart, Star, Eye } from 'lucide-react';
+import { Heart, ShoppingCart, Star, Eye, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppContext } from '../context/AppContext';
@@ -16,6 +16,7 @@ const conditionConfig = {
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart, wishlist, toggleWishlist, cart, updateQuantity } = useAppContext();
+  const [isAnimating, setIsAnimating] = useState(false);
   const isWishlisted = !!wishlist.find((item) => item.id === product.id);
   const { image, name, price, originalPrice, discount, brand, year, ram, condition, storage, rating, isPopular, stock } = product;
 
@@ -82,7 +83,7 @@ const ProductCard = ({ product }) => {
             alt={name}
             brand={brand}
             containerClassName="w-full h-full"
-            className="max-w-full max-h-full object-contain mix-blend-multiply dark:mix-blend-normal drop-shadow-xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 will-change-transform"
+            className={`max-w-full max-h-full object-contain mix-blend-multiply dark:mix-blend-normal drop-shadow-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isAnimating ? 'scale-50 opacity-0 -translate-y-10' : 'group-hover:scale-105'} will-change-transform`}
           />
         </div>
 
@@ -222,14 +223,18 @@ const ProductCard = ({ product }) => {
                   onClick={(e) => { 
                     e.preventDefault(); 
                     e.stopPropagation(); 
+                    if (isAnimating) return;
+                    setIsAnimating(true);
                     addToCart(product); 
+                    setTimeout(() => setIsAnimating(false), 800);
                   }}
                   variant="primary"
                   size="sm"
-                  className="!px-4 !py-2.5 !rounded-full shadow-md"
+                  className={`!px-4 !py-2.5 !rounded-full shadow-md transition-all duration-300 ${isAnimating ? '!bg-emerald-500 !hover:bg-emerald-600 !border-emerald-500 text-white scale-95' : ''}`}
+                  disabled={isAnimating}
                 >
-                  <ShoppingCart size={14} strokeWidth={2} />
-                  Add
+                  {isAnimating ? <CheckCircle2 size={14} strokeWidth={2} /> : <ShoppingCart size={14} strokeWidth={2} />}
+                  {isAnimating ? 'Added' : 'Add'}
                 </Button>
               );
             })()

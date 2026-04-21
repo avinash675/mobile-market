@@ -23,6 +23,8 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showEditModal, setShowEditModal] = useState(false);
 
+  console.log("Updated user:", user);
+
   // Animation constants for Apple-level smoothness
   const containerVariants = {
     initial: { opacity: 0, y: 20 },
@@ -50,7 +52,7 @@ const Profile = () => {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      updateUser({ image: reader.result });
+      updateUser({ profileImage: reader.result });
     };
     reader.readAsDataURL(file);
   };
@@ -168,8 +170,8 @@ const Profile = () => {
                           />
                           <label htmlFor="avatar-upload" className="block cursor-pointer">
                             <div className="w-24 h-24 rounded-full bg-blue-600 text-white flex items-center justify-center text-4xl font-black italic shadow-2xl border-4 border-white/20 overflow-hidden relative">
-                              {user.image ? (
-                                <img src={user.image} alt="Profile" className="w-full h-full object-cover" />
+                              {user.profileImage ? (
+                                <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
                               ) : (
                                 user.name.charAt(0)
                               )}
