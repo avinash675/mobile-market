@@ -102,7 +102,7 @@ const MyOrdersPage = () => {
                   <option value="Pending">Active / Pending</option>
                   <option value="Delivered">Delivered</option>
                 </select>
-                <Filter size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary dark:text-gray-500 pointer-events-none" />
+                <Filter size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary dark:text-gray-400 pointer-events-none" />
               </div>
 
               <div className="relative group">
@@ -114,7 +114,7 @@ const MyOrdersPage = () => {
                   <option value="latest">Latest First</option>
                   <option value="oldest">Oldest First</option>
                 </select>
-                <ArrowUpDown size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary dark:text-gray-500 pointer-events-none" />
+                <ArrowUpDown size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary dark:text-gray-400 pointer-events-none" />
               </div>
             </div>
           </div>
@@ -143,15 +143,15 @@ const MyOrdersPage = () => {
                       {order.image && !order.image.includes('Products') ? (
                          <img src={order.image} alt={order.productName} className="w-full h-full object-contain p-2 relative z-10" />
                       ) : (
-                         <Package size={28} strokeWidth={1.5} className="text-text-secondary dark:text-gray-400 relative z-10 group-hover:scale-110 transition-transform duration-500" />
+                         <Package size={28} strokeWidth={1.5} className="text-text-secondary dark:text-gray-300 relative z-10 group-hover:scale-110 transition-transform duration-500" />
                       )}
                     </div>
 
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-1.5">
-                        <p className="text-[11px] font-black text-text-secondary dark:text-gray-500 uppercase tracking-widest">{order.id}</p>
+                        <p className="text-[11px] font-black text-text-secondary dark:text-gray-400 uppercase tracking-widest">{order.id}</p>
                         <div className="w-1 h-1 rounded-full bg-border dark:bg-gray-600 hidden sm:block" />
-                        <p className="text-[11px] font-bold text-text-secondary dark:text-gray-500 hidden sm:block">
+                        <p className="text-[11px] font-bold text-text-secondary dark:text-gray-400 hidden sm:block">
                           {order.date ? new Date(order.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'Unknown Date'}
                         </p>
                       </div>
@@ -203,7 +203,7 @@ const MyOrdersPage = () => {
                 className="w-full bg-white dark:bg-[#111113] rounded-3xl p-12 border border-border dark:border-white/5 shadow-sm text-center flex flex-col items-center justify-center min-h-[400px]"
               >
                 <div className="w-24 h-24 bg-gray-50 dark:bg-white/[0.02] rounded-full flex items-center justify-center mb-6 border border-border dark:border-white/5">
-                  <ShoppingBag size={40} className="text-text-secondary dark:text-gray-500 opacity-50" />
+                  <ShoppingBag size={40} className="text-text-secondary dark:text-gray-400 opacity-50" />
                 </div>
                 <h3 className="text-xl font-black text-text-primary dark:text-white mb-2">No orders found</h3>
                 <p className="text-sm text-text-secondary dark:text-gray-400 mb-8 max-w-sm">

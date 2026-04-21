@@ -1,7 +1,10 @@
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
 /**
  * Utility to merge tailwind class names with conditional logic.
- * Simple dependency-free version for Mobixa.
+ * Uses tailwind-merge to handle conflict resolution.
  */
-export function cn(...classes) {
-  return classes.filter(Boolean).join(' ');
+export function cn(...inputs) {
+  return twMerge(clsx(inputs));
 }

@@ -62,7 +62,7 @@ const dealSlides = [
 
 const DealsCarousel = () => {
   return (
-    <section className="py-24 bg-bgLight overflow-hidden">
+    <section className="py-24 bg-bgLight dark:bg-[#09090b] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <motion.div
@@ -74,8 +74,8 @@ const DealsCarousel = () => {
               <Zap size={14} className="fill-accent" />
               Flash Deals of the Day
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-textDark tracking-tighter leading-tight">
-              Exclusive <span className="italic">Offers</span> <br /> 
+            <h2 className="text-4xl md:text-5xl font-black text-textDark dark:text-white tracking-tighter leading-tight">
+              Exclusive <span className="italic text-textDark dark:text-white">Offers</span> <br /> 
               Waiting For You.
             </h2>
           </motion.div>
@@ -84,7 +84,7 @@ const DealsCarousel = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            <Button variant="outline" className="group rounded-2xl bg-white border-gray-200 text-textDark">
+            <Button variant="outline" className="group rounded-2xl bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-textDark dark:text-white">
               View All Deals <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </motion.div>
@@ -113,9 +113,9 @@ const DealsCarousel = () => {
         >
           {dealSlides.map((slide) => (
             <SwiperSlide key={slide.id} className="w-[300px] md:w-[450px]">
-              <div className={`relative bg-gradient-to-tr ${slide.color} bg-white rounded-[40px] p-8 md:p-12 border border-gray-100 shadow-premium group hover:shadow-premium-hover transition-all duration-500`}>
+              <div className={`relative bg-gradient-to-tr ${slide.color} bg-white dark:bg-[#111113] rounded-[40px] p-8 md:p-12 border border-gray-100 dark:border-white/5 shadow-premium group hover:shadow-premium-hover transition-all duration-500`}>
                 <div className="absolute top-8 left-8 z-20">
-                  <span className="bg-textDark text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-3 block w-fit">
+                  <span className="bg-textDark dark:bg-white text-white dark:text-textDark text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-3 block w-fit">
                     {slide.tag}
                   </span>
                   <div className="flex items-center gap-2">
@@ -139,10 +139,10 @@ const DealsCarousel = () => {
                   </motion.div>
 
                   <div className="text-center">
-                    <h3 className="text-2xl font-black text-textDark mb-2">{slide.title}</h3>
+                    <h3 className="text-2xl font-black text-textDark dark:text-white mb-2">{slide.title}</h3>
                     <div className="flex items-center justify-center gap-3 mb-8">
-                      <span className="text-3xl font-black text-textDark">{slide.price}</span>
-                      <span className="text-lg text-textMuted line-through font-medium">{slide.originalPrice}</span>
+                      <span className="text-3xl font-black text-textDark dark:text-white">{slide.price}</span>
+                      <span className="text-lg text-textMuted dark:text-gray-400 line-through font-medium">{slide.originalPrice}</span>
                     </div>
                     <Button size="lg" className="w-full rounded-2xl shadow-xl shadow-accent/10">
                       Claim This Deal

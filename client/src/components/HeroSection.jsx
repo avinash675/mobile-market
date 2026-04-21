@@ -1,16 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ShieldCheck, RefreshCw, Award, CheckCircle2, Star } from 'lucide-react';
+import { ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import iphoneImg from '../assets/images/iphone.png';
 import Button from './common/Button';
-
-const trustBadges = [
-  { icon: ShieldCheck, label: '12-Month Warranty' },
-  { icon: CheckCircle2, label: 'Certified Quality' },
-  { icon: RefreshCw, label: '7-Day Returns' },
-  { icon: Award, label: 'Premium Grade' }
-];
 
 const HeroSection = () => {
   return (
@@ -96,26 +89,6 @@ const HeroSection = () => {
               </Link>
             </motion.div>
 
-            {/* Trust Indicators */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 pt-8 border-t border-gray-100 dark:border-white/5">
-              {trustBadges.map((badge, idx) => (
-                <motion.div 
-                  key={idx}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 + (idx * 0.1), duration: 0.6 }}
-                  whileHover={{ y: -5, scale: 1.05 }}
-                  className="flex flex-col gap-3 group cursor-default transition-all duration-300"
-                >
-                  <div className="w-10 h-10 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center group-hover:bg-blue-50 dark:group-hover:bg-blue-500/10 transition-colors duration-300">
-                    <badge.icon size={22} className="text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors duration-300" />
-                  </div>
-                  <span className="text-[13px] font-bold text-text-secondary dark:text-gray-300 group-hover:text-text-primary dark:group-hover:text-white transition-colors duration-300 leading-tight">
-                    {badge.label}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
 
           {/* Right Image Presentation - 3D Composition */}

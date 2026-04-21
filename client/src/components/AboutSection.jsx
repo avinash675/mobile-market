@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Tag, Award, Repeat, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Tag, Award, Repeat, ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Button from './common/Button';
 import aboutImg from '../assets/images/about-illustration.png';
@@ -27,10 +27,10 @@ const AboutSection = () => {
   };
 
   const features = [
-    { icon: <ShieldCheck className="text-blue-500" size={24} />, label: 'Verified Devices', desc: '65-point quality check' },
-    { icon: <Tag className="text-emerald-500" size={24} />, label: 'Best Prices', desc: 'Unbeatable value' },
-    { icon: <Award className="text-amber-500" size={24} />, label: 'Trusted Brands', desc: '100% Authentic products' },
-    { icon: <Repeat className="text-violet-500" size={24} />, label: 'Easy Comparison', desc: 'Smart decision making' },
+    { icon: <ShieldCheck size={24} className="text-blue-600 dark:text-blue-400" />, label: 'Verified Devices', desc: 'Rigorous 65-point quality inspection' },
+    { icon: <Tag size={24} className="text-emerald-600 dark:text-emerald-400" />, label: 'Unbeatable Value', desc: 'Premium tech at accessible prices' },
+    { icon: <Award size={24} className="text-amber-600 dark:text-amber-400" />, label: '100% Authentic', desc: 'Guaranteed original components' },
+    { icon: <Repeat size={24} className="text-violet-600 dark:text-violet-400" />, label: 'Hassle-Free', desc: 'Seamless returns and warranty' },
   ];
 
   const stats = [
@@ -56,115 +56,108 @@ const AboutSection = () => {
             viewport={{ once: true, margin: "-100px" }}
             className="space-y-10"
           >
-            <div className="space-y-4">
+            <div className="space-y-5">
               <motion.span 
                 variants={itemVariants}
-                className="inline-block px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[12px] font-bold tracking-widest uppercase"
+                className="inline-block px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[11px] font-black tracking-widest uppercase shadow-sm"
               >
-                Our Story
+                The Mobixa Standard
               </motion.span>
               <motion.h2 
                 variants={itemVariants}
-                className="text-4xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.1]"
+                className="text-[40px] lg:text-[56px] font-black tracking-tighter text-text-primary dark:text-white leading-[1.05]"
               >
-                About Mobixa
-                <span className="block text-slate-400 dark:text-slate-500 text-2xl lg:text-3xl mt-2">
-                  Smart Technology, Smarter Choices
+                Redefining Refurbished.
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-gray-600 dark:from-gray-300 dark:to-gray-500 mt-1">
+                  Premium Tech. Smarter Choices.
                 </span>
               </motion.h2>
               <motion.p 
                 variants={itemVariants}
-                className="text-lg text-slate-600 dark:text-slate-400 font-medium leading-relaxed max-w-xl"
+                className="text-[16px] lg:text-[18px] text-text-secondary dark:text-gray-400 font-medium leading-relaxed max-w-lg"
               >
-                Mobixa is your trusted platform to discover and buy high-quality refurbished smartphones at unbeatable prices. We bring together top brands, verified devices, and the best deals to help you make smarter buying decisions.
+                We believe premium technology shouldn't come with a premium price tag. Mobixa bridges the gap between flagship performance and accessibility, rigorously restoring top-tier devices to flawless condition.
               </motion.p>
             </div>
 
-            {/* Features Grid */}
-            <div className="grid grid-cols-2 gap-6 sm:gap-8">
+            {/* Features Grid - Perfect 2x2 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
               {features.map((feature, idx) => (
                 <motion.div
                   key={idx}
                   variants={itemVariants}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="group p-5 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-none"
+                  whileHover={{ y: -5 }}
+                  className="p-6 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-100 dark:border-white/[0.08] transition-all duration-300"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-gray-50 dark:bg-white/5 flex items-center justify-center mb-4">
                     {feature.icon}
                   </div>
-                  <h4 className="font-bold text-slate-900 dark:text-white mb-1">{feature.label}</h4>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{feature.desc}</p>
+                  <h4 className="text-[16px] font-bold text-text-primary dark:text-white mb-1.5 tracking-tight">{feature.label}</h4>
+                  <p className="text-[13px] text-text-secondary dark:text-gray-400 leading-relaxed font-medium">{feature.desc}</p>
                 </motion.div>
               ))}
             </div>
 
-            {/* Mission Statement */}
+            {/* Mission Statement - Aligned */}
             <motion.div 
               variants={itemVariants}
-              className="p-8 rounded-3xl bg-blue-600 dark:bg-blue-600/90 text-white relative overflow-hidden group shadow-2xl shadow-blue-600/20"
+              className="p-8 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/5 relative overflow-hidden group"
             >
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                <Award size={80} strokeWidth={1} />
+              <div className="absolute top-0 right-0 p-6 opacity-5 dark:opacity-10 group-hover:rotate-12 transition-transform duration-700 pointer-events-none">
+                <Star size={80} strokeWidth={1} />
               </div>
-              <h3 className="text-xl font-bold mb-3 relative z-10">Our Mission</h3>
-              <p className="text-blue-50 leading-relaxed font-medium relative z-10">
-                Our mission is to make premium technology accessible to everyone by offering reliable devices at affordable prices without compromising quality.
+              <h3 className="text-[11px] uppercase tracking-[0.2em] font-black text-blue-600 dark:text-blue-400 mb-3 relative z-10">Our Mission</h3>
+              <p className="text-[16px] text-text-primary dark:text-white leading-relaxed font-bold relative z-10 max-w-lg">
+                To democratize premium technology by engineering a flawless, accessible, and sustainable smartphone lifecycle.
               </p>
             </motion.div>
 
-            {/* Stats Row */}
-            <div className="flex flex-wrap gap-12 pt-4">
+            {/* Stats Row - Clean Horizontal */}
+            <div className="flex items-center gap-12 lg:gap-20 pt-10 border-t border-gray-100 dark:border-white/5">
               {stats.map((stat, idx) => (
                 <motion.div key={idx} variants={itemVariants}>
-                  <div className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">{stat.value}</div>
-                  <div className="text-[13px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">{stat.label}</div>
+                  <div className="text-[32px] lg:text-[36px] font-black text-text-primary dark:text-white tracking-tighter leading-none">
+                    {stat.value}
+                  </div>
+                  <div className="text-[11px] font-bold text-text-secondary dark:text-gray-400 uppercase tracking-widest mt-2">
+                    {stat.label}
+                  </div>
                 </motion.div>
               ))}
             </div>
 
             {/* CTA */}
-            <motion.div variants={itemVariants} className="pt-4">
+            <motion.div variants={itemVariants} className="pt-2">
               <Link to="/shop">
-                <Button size="xl" className="px-12 group">
-                  Explore Deals
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                <Button variant="primary" size="lg" className="h-14 !px-10 rounded-full group">
+                  <span className="font-bold">Experience the Standard</span>
+                  <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Illustration */}
+          {/* Right Content - Illustration Only */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
-            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="relative"
+            className="relative flex items-center justify-center lg:justify-end mt-12 lg:mt-0"
           >
-            <div className="absolute inset-0 bg-blue-500/10 dark:bg-blue-500/20 rounded-[40px] blur-[80px] -rotate-6 scale-90" />
-            <div className="relative rounded-[40px] overflow-hidden border border-slate-200 dark:border-white/10 shadow-2xl">
+            {/* Animated Glow */}
+            <div className="absolute inset-0 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[100px] -z-10" />
+            
+            <motion.div 
+              animate={{ y: [-10, 10, -10] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="relative max-w-[420px] rounded-[32px] overflow-hidden border border-gray-100 dark:border-white/10 shadow-2xl z-10 bg-white/5"
+            >
               <img 
                 src={aboutImg} 
                 alt="Mobixa Refurbished Smartphones"
-                className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
+                className="w-full h-auto object-cover"
               />
-            </div>
-            
-            {/* Floating Badges */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-8 -right-8 p-6 bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-white/10 hidden md:block"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500">
-                  <ShieldCheck size={28} />
-                </div>
-                <div>
-                  <div className="text-lg font-black text-slate-900 dark:text-white">65pt Check</div>
-                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Verified Quality</div>
-                </div>
-              </div>
             </motion.div>
           </motion.div>
 

@@ -139,15 +139,15 @@ const ProductDetails = () => {
 
           {/* Title */}
           <div>
-            <h1 className="text-3xl lg:text-4xl font-black tracking-tight text-primary mb-2">{product.name}</h1>
+            <h1 className="text-3xl lg:text-4xl font-black tracking-tight text-text-primary dark:text-white mb-2">{product.name}</h1>
             <div className="flex items-center gap-4">
               <div className="flex text-yellow-500">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={16} fill={i < Math.floor(product.rating) ? "currentColor" : "none"} />
                 ))}
               </div>
-              <span className="text-sm font-bold text-secondary">
-                {product.rating} <span className="opacity-40 ml-1">({product.reviews} reviews)</span>
+               <span className="text-sm font-bold text-text-secondary dark:text-gray-300">
+                {product.rating} <span className="opacity-60 ml-1 dark:text-gray-400">({product.reviews} reviews)</span>
               </span>
             </div>
           </div>
@@ -156,11 +156,11 @@ const ProductDetails = () => {
           <div className="flex items-end gap-3">
              <div className="flex flex-col">
                 {product.originalPrice && (
-                  <span className="text-sm line-through text-secondary/40 font-bold mb-1">
+                  <span className="text-sm line-through text-text-secondary/40 dark:text-gray-400/60 font-bold mb-1">
                     ₹{product.originalPrice.toLocaleString()}
                   </span>
                 )}
-                <span className="text-4xl font-black text-primary leading-none">
+                <span className="text-4xl font-black text-text-primary dark:text-white leading-none">
                   ₹{currentPrice.toLocaleString()}
                 </span>
              </div>
@@ -173,8 +173,8 @@ const ProductDetails = () => {
 
           {/* --- NEW COLOR SELECTOR --- */}
           {product.colors?.length > 0 && (
-            <div className="space-y-4 pt-4 border-t border-slate-100">
-              <h3 className="text-[12px] font-black uppercase tracking-[0.15em] text-secondary">Choose Color: <span className="text-primary ml-1">{selectedColor?.name}</span></h3>
+            <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-white/5">
+              <h3 className="text-[12px] font-black uppercase tracking-[0.15em] text-text-secondary dark:text-gray-400">Choose Color: <span className="text-text-primary dark:text-white ml-1">{selectedColor?.name}</span></h3>
               <div className="flex flex-wrap gap-4">
                 {product.colors.map((color, i) => (
                   <button
@@ -195,8 +195,8 @@ const ProductDetails = () => {
           )}
 
           {/* Variants */}
-          <div className="space-y-4 pt-4 border-t border-slate-100">
-            <h3 className="text-[12px] font-black uppercase tracking-[0.15em] text-secondary">Configuration</h3>
+          <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-white/5">
+            <h3 className="text-[12px] font-black uppercase tracking-[0.15em] text-text-secondary dark:text-gray-400">Configuration</h3>
             <div className="flex flex-wrap gap-2">
               {product.variants ? product.variants.map((v, i) => (
                 <button
@@ -204,8 +204,8 @@ const ProductDetails = () => {
                   onClick={() => setSelectedVariant(v)}
                   className={`px-5 py-3 rounded-xl border-2 transition-all duration-300 font-bold text-sm ${
                     selectedVariant?.label === v.label
-                      ? "border-slate-900 bg-slate-900 text-white shadow-xl scale-105"
-                      : "border-slate-100 text-secondary hover:border-slate-300"
+                      ? "border-slate-900 bg-slate-900 text-white shadow-xl scale-105 dark:bg-white dark:text-black dark:border-white"
+                      : "border-slate-100 text-text-secondary dark:border-white/10 dark:text-gray-400 hover:border-slate-300 dark:hover:border-white/20"
                   }`}
                 >
                   {v.label}
@@ -241,24 +241,24 @@ const ProductDetails = () => {
 
           {/* --- NEW SPECS GRID --- */}
           {product.specs && (
-            <div className="pt-8 border-t border-slate-100">
-               <h3 className="text-[12px] font-black uppercase tracking-[0.15em] text-secondary mb-6">Key Specifications</h3>
-               <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-2xl bg-slate-50/50 border border-slate-100 flex flex-col gap-1">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-secondary/60">Performance</span>
-                    <span className="text-sm font-bold text-primary">{product.specs.performance}</span>
+            <div className="pt-8 border-t border-slate-100 dark:border-white/5">
+               <h3 className="text-[12px] font-black uppercase tracking-[0.15em] text-text-secondary dark:text-gray-400 mb-6">Key Specifications</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-2xl bg-slate-50/50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 flex flex-col gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary/60 dark:text-gray-500">Performance</span>
+                    <span className="text-sm font-bold text-text-primary dark:text-white">{product.specs.performance}</span>
                   </div>
-                  <div className="p-4 rounded-2xl bg-slate-50/50 border border-slate-100 flex flex-col gap-1">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-secondary/60">Battery</span>
-                    <span className="text-sm font-bold text-primary">{product.specs.battery}</span>
+                  <div className="p-4 rounded-2xl bg-slate-50/50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 flex flex-col gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary/60 dark:text-gray-500">Battery</span>
+                    <span className="text-sm font-bold text-text-primary dark:text-white">{product.specs.battery}</span>
                   </div>
-                  <div className="p-4 rounded-2xl bg-slate-50/50 border border-slate-100 flex flex-col gap-1">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-secondary/60">Main Camera</span>
-                    <span className="text-sm font-bold text-primary">{product.specs.camera}</span>
+                  <div className="p-4 rounded-2xl bg-slate-50/50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 flex flex-col gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary/60 dark:text-gray-500">Main Camera</span>
+                    <span className="text-sm font-bold text-text-primary dark:text-white">{product.specs.camera}</span>
                   </div>
-                  <div className="p-4 rounded-2xl bg-slate-50/50 border border-slate-100 flex flex-col gap-1">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-secondary/60">Charging</span>
-                    <span className="text-sm font-bold text-primary">{product.specs.charger}</span>
+                  <div className="p-4 rounded-2xl bg-slate-50/50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 flex flex-col gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary/60 dark:text-gray-500">Charging</span>
+                    <span className="text-sm font-bold text-text-primary dark:text-white">{product.specs.charger}</span>
                   </div>
                </div>
             </div>
@@ -310,21 +310,21 @@ const ProductDetails = () => {
           {/* Left: Summary */}
           <div className="lg:w-1/3">
             <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
-            <div className="p-8 bg-slate-50 rounded-[32px] border border-slate-100 text-center">
+            <div className="p-8 bg-slate-50 dark:bg-white/[0.03] rounded-[32px] border border-slate-100 dark:border-white/5 text-center">
               <div className="text-5xl font-black text-primary mb-2">{product.rating}</div>
               <div className="flex justify-center text-yellow-500 mb-2">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={20} fill={i < Math.floor(product.rating) ? "currentColor" : "none"} />
                 ))}
               </div>
-              <p className="text-secondary font-medium">Based on {product.reviews} verified reviews</p>
+              <p className="text-text-secondary dark:text-gray-300 font-medium">Based on {product.reviews} verified reviews</p>
             </div>
           </div>
 
           {/* Right: Reviews List & Form */}
           <div className="lg:w-2/3 space-y-12">
             {/* Form */}
-            <div className="p-8 bg-white rounded-[32px] border border-slate-100 shadow-sm max-w-2xl mx-auto lg:mx-0">
+            <div className="p-8 bg-white dark:bg-[#111113] rounded-[32px] border border-slate-100 dark:border-white/5 shadow-sm max-w-2xl mx-auto lg:mx-0">
               <h3 className="text-lg font-bold mb-6">Write a Review</h3>
               <form onSubmit={handleAddReview} className="space-y-6">
                 <div>
@@ -346,7 +346,7 @@ const ProductDetails = () => {
                   value={newReview.comment}
                   onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
                   placeholder="Share your thoughts about this device..."
-                  className="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200 min-h-[120px] transition-all"
+                  className="w-full p-4 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 focus:outline-none focus:ring-2 focus:ring-slate-200 min-h-[120px] transition-all"
                 />
                 <Button type="submit" variant="primary" className="px-8">
                   Submit Review
@@ -463,7 +463,7 @@ const ProductDetails = () => {
         
         {/* Horizontal Scroll Wrapper for Mobile */}
         <div className="overflow-x-auto pb-4 custom-scrollbar">
-          <div className="min-w-[800px] lg:min-w-full grid grid-cols-4 border border-slate-100 rounded-[32px] overflow-hidden bg-white shadow-sm">
+          <div className="min-w-[800px] lg:min-w-full grid grid-cols-4 border border-slate-100 dark:border-white/5 rounded-[32px] overflow-hidden bg-white dark:bg-[#111113] shadow-sm">
             
             {/* Features Column */}
             <div className="flex flex-col border-r border-slate-100">
@@ -495,8 +495,7 @@ const ProductDetails = () => {
                     {idx === 0 && <span className="text-[10px] font-black uppercase tracking-tighter text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Current</span>}
                   </div>
 
-                  {/* Price */}
-                  <div className="flex-1 p-6 border-b border-slate-100 flex items-center justify-center font-black text-primary">
+                  <div className="flex-1 p-6 border-b border-slate-100 dark:border-white/5 flex items-center justify-center font-black text-text-primary dark:text-white">
                     ₹{p.price.toLocaleString()}
                   </div>
 
@@ -539,7 +538,7 @@ const ProductDetails = () => {
 
       {/* 🔥 MOBILE STICKY BAR */}
       {stock > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex gap-3 lg:hidden">
+        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#09090b] border-t dark:border-white/10 p-4 flex gap-3 lg:hidden z-50">
           <Button onClick={() => addToCart({ ...product, ...selectedVariant, name: `${product.name} (${selectedVariant?.label})` })} className="flex-1">
             Add to Cart
           </Button>

@@ -23,8 +23,8 @@ function DealSection({ title, subtitle, products }) {
       <div className="flex justify-between items-end mb-12">
         <div>
           <span className="text-accent font-black uppercase tracking-[0.3em] text-[10px] mb-2 block">Featured Collection</span>
-          <h2 className="text-4xl font-black text-textDark tracking-tighter">{title}</h2>
-          {subtitle && <p className="text-textMuted mt-2">{subtitle}</p>}
+          <h2 className="text-4xl font-black text-textDark dark:text-white tracking-tighter">{title}</h2>
+          {subtitle && <p className="text-textMuted dark:text-gray-400 mt-2">{subtitle}</p>}
         </div>
         <button className="text-accent hover:underline italic text-sm font-bold flex items-center gap-2">
           View All Collection <span aria-hidden="true">&rarr;</span>

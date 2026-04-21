@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Heart, ShoppingCart, Star, Eye, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,6 +18,7 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart, wishlist, toggleWishlist, cart, updateQuantity } = useAppContext();
   const [isAnimating, setIsAnimating] = useState(false);
+  const [flyAnimation, setFlyAnimation] = useState(null);
   const isWishlisted = !!wishlist.find((item) => item.id === product.id);
   const { image, name, price, originalPrice, discount, brand, year, ram, condition, storage, rating, isPopular, stock } = product;
 
@@ -47,6 +49,45 @@ const ProductCard = ({ product }) => {
     
     return () => clearInterval(interval);
   }, [isPopular]);
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    
+    // Get image coordinates
+    const imgEl = e.currentTarget.closest('.card')?.querySelector('img');
+    const rect = imgEl?.getBoundingClientRect();
+    
+    if (rect) {
+      // Get target cart icon coordinates
+      const isMobile = window.innerWidth < 768;
+      const cartIconEl = document.getElementById(isMobile ? 'cart-icon-mobile' : 'cart-icon-desktop');
+      const targetRect = cartIconEl?.getBoundingClientRect() || { top: 0, left: window.innerWidth, width: 40, height: 40 };
+
+      setFlyAnimation({
+        src: image,
+        startX: rect.left,
+        startY: rect.top,
+        width: rect.width,
+        height: rect.height,
+        endX: targetRect.left + (targetRect.width / 2) - (rect.width / 2),
+        endY: targetRect.top + (targetRect.height / 2) - (rect.height / 2)
+      });
+    }
+
+    // After flight animation completes
+    setTimeout(() => {
+      addToCart(product);
+      setFlyAnimation(null);
+      window.dispatchEvent(new CustomEvent('cart-item-added'));
+      
+      // Keep success state for a bit longer
+      setTimeout(() => setIsAnimating(false), 1200); 
+    }, 500); 
+  };
 
   return (
     <article className="card group overflow-hidden flex flex-col h-full relative cursor-pointer transition-transform duration-200 ease-out hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-[0_10px_30px_-15px_rgba(0,0,0,0.4)]">
@@ -83,7 +124,7 @@ const ProductCard = ({ product }) => {
             alt={name}
             brand={brand}
             containerClassName="w-full h-full"
-            className={`max-w-full max-h-full object-contain mix-blend-multiply dark:mix-blend-normal drop-shadow-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isAnimating ? 'scale-50 opacity-0 -translate-y-10' : 'group-hover:scale-105'} will-change-transform`}
+            className={`max-w-full max-h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isAnimating ? 'scale-105 drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)]' : 'drop-shadow-xl group-hover:scale-105'} will-change-transform`}
           />
         </div>
 
@@ -111,7 +152,7 @@ const ProductCard = ({ product }) => {
 
           <div className="flex items-center gap-1">
             <Star size={10} className="text-amber-500 fill-amber-500" />
-            <span className="text-[10px] font-bold text-text-primary dark:text-white">{rating}</span>
+            <span className="text-[10px] font-bold text-text-primary dark:text-gray-200">{rating}</span>
           </div>
         </div>
 
@@ -177,7 +218,7 @@ const ProductCard = ({ product }) => {
         <div className="mt-auto pt-2 flex items-center justify-between">
           <div className="flex flex-col">
             {originalPrice && (
-              <span className="text-[11px] text-text-secondary dark:text-gray-500 line-through font-semibold -mb-0.5">
+              <span className="text-[11px] text-text-secondary dark:text-gray-400 line-through font-semibold -mb-0.5">
                 ₹{originalPrice?.toLocaleString('en-IN') || '0'}
               </span>
             )}
@@ -220,17 +261,10 @@ const ProductCard = ({ product }) => {
               }
               return (
                 <Button
-                  onClick={(e) => { 
-                    e.preventDefault(); 
-                    e.stopPropagation(); 
-                    if (isAnimating) return;
-                    setIsAnimating(true);
-                    addToCart(product); 
-                    setTimeout(() => setIsAnimating(false), 800);
-                  }}
+                  onClick={handleAddToCart}
                   variant="primary"
                   size="sm"
-                  className={`!px-4 !py-2.5 !rounded-full shadow-md transition-all duration-300 ${isAnimating ? '!bg-emerald-500 !hover:bg-emerald-600 !border-emerald-500 text-white scale-95' : ''}`}
+                  className={`!px-4 !py-2.5 !rounded-full shadow-md transition-all duration-300 active:scale-90 ${isAnimating ? '!bg-emerald-500 !hover:bg-emerald-600 !border-emerald-500 text-white scale-95' : ''}`}
                   disabled={isAnimating}
                 >
                   {isAnimating ? <CheckCircle2 size={14} strokeWidth={2} /> : <ShoppingCart size={14} strokeWidth={2} />}
@@ -241,6 +275,46 @@ const ProductCard = ({ product }) => {
           )}
         </div>
       </div>
+
+      {/* Fly Animation Portal */}
+      {flyAnimation && createPortal(
+        <motion.img
+          src={flyAnimation.src}
+          initial={{ 
+            x: flyAnimation.startX, 
+            y: flyAnimation.startY, 
+            width: flyAnimation.width, 
+            height: flyAnimation.height,
+            opacity: 1,
+            scale: 1,
+            rotate: 0
+          }}
+          animate={{ 
+            x: flyAnimation.endX, 
+            y: flyAnimation.endY, 
+            scale: 0.1,
+            opacity: 0,
+            rotate: 15
+          }}
+          transition={{ 
+            x: { duration: 0.5, ease: "linear" },
+            y: { duration: 0.5, ease: "easeIn" },
+            scale: { duration: 0.5, ease: "easeOut" },
+            opacity: { duration: 0.5, ease: "easeIn" },
+            rotate: { duration: 0.5, ease: "linear" }
+          }}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 999999,
+            pointerEvents: 'none',
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))'
+          }}
+        />,
+        document.body
+      )}
     </article>
   );
 };

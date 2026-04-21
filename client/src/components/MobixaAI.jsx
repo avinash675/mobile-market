@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send } from 'lucide-react';
-import products from '../data/products';
+import { products } from '../data/products';
 
 const MobixaAI = () => {
   const [isOpen, setIsOpen] = useState(false);

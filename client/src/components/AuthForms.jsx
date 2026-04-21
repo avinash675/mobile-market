@@ -95,7 +95,7 @@ const Field = ({ label, type = 'text', placeholder, value, onChange, name, error
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-center">
-        <label className="block text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+        <label className="block text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-widest">
           {label}
         </label>
         <AnimatePresence>
@@ -168,8 +168,7 @@ export const LoginForm = () => {
 
       if (foundUser) {
         console.log("Logged in user:", foundUser);
-        // Login success
-        login(foundUser); // Updates context and mobixa_user session
+        login(foundUser); // Updates context and session
         setShowSplash(true);
         
         setTimeout(() => {
@@ -219,7 +218,7 @@ export const LoginForm = () => {
           <Field label="Email" type="email" name="email" placeholder="name@company.com" value={form.email} onChange={onChange} />
           <div>
             <div className="flex justify-between items-center mb-2">
-              <label className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Password</label>
+              <label className="text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-widest">Password</label>
               <Link to="#" className="text-[11px] font-bold text-accent hover:opacity-80 transition-opacity">Forgot?</Link>
             </div>
             <Field type="password" name="password" placeholder="••••••••" value={form.password} onChange={onChange} />
@@ -250,7 +249,7 @@ export const LoginForm = () => {
           </motion.button>
         </form>
 
-        <p className="text-center text-[13px] text-gray-400 dark:text-gray-500 mt-8">
+        <p className="text-center text-[13px] text-gray-400 dark:text-gray-400 mt-8">
           Don't have an account?{' '}
           <Link to="/signup" className="text-accent font-bold hover:opacity-80 transition-opacity">Sign up</Link>
         </p>
@@ -362,9 +361,8 @@ export const SignupForm = () => {
       localStorage.setItem("mobixa_users", JSON.stringify(storedUsers));
       console.log("Stored Users after signup:", storedUsers);
       
-      // Set current session
-      localStorage.setItem("mobixa_user", JSON.stringify(userData));
-      login(userData); // 🔥 instant UI update
+      // Set current session via context
+      login(userData); // 🔥 instant UI update and storage sync
       
       setShowSplash(true);
       setTimeout(() => {
@@ -436,7 +434,7 @@ export const SignupForm = () => {
           </motion.button>
         </form>
 
-        <p className="text-center text-[13px] text-gray-400 dark:text-gray-500 mt-8">
+        <p className="text-center text-[13px] text-gray-400 dark:text-gray-400 mt-8">
           Already have an account?{' '}
           <Link to="/login" className="text-accent font-bold hover:opacity-80 transition-opacity">Sign in</Link>
         </p>

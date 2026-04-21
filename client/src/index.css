@@ -85,7 +85,7 @@
   .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 { color: #fff; }
 
   p { color: #64748B; margin: 0; }
-  .dark p { color: rgba(255,255,255,0.5); }
+  .dark p { color: rgba(255,255,255,0.7); }
   a { text-decoration: none; color: inherit; }
 
   ::selection {

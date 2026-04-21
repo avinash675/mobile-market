@@ -66,7 +66,7 @@ function BrandGrid() {
                 className="max-h-full max-w-full object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" 
               />
             </div>
-            <span className="text-caption font-bold text-secondary uppercase tracking-widest group-hover:text-accent transition-colors">
+            <span className="text-caption font-bold text-secondary dark:text-gray-400 uppercase tracking-widest group-hover:text-accent transition-colors">
               {brand.name}
             </span>
           </Card>

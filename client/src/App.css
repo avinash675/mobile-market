@@ -1,9 +1,4 @@
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #0f0f0f;
-  color: white;
-}
+/* Styles in this file are legacy and should be gradually migrated to index.css or Tailwind utility classes */
 
 .slider-img {
   width: 100%;
