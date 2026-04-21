@@ -7,11 +7,17 @@ import {
   Search,
   Sun,
   Moon,
+  Menu,
+  X,
+  User,
+  LogOut,
+  ChevronRight
 } from 'lucide-react';
 
 import { useAppContext } from '../context/AppContext';
 import SearchSuggestions from './SearchSuggestions';
 import { products } from '../data/products';
+import Button from './common/Button';
 
 const nav = [
   { label: 'Shop', to: '/shop' },
@@ -37,6 +43,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [bounce, setBounce] = useState(false);
 
@@ -227,29 +234,191 @@ const Navbar = () => {
         </nav>
       </div>
 
-      {/* SEARCH PANEL */}
-      {isSearchOpen && (
-        <div className="fixed top-24 inset-x-0 z-30 flex justify-center">
-          <div className="w-full max-w-xl bg-white dark:bg-black rounded-xl p-3">
-            <input
-              autoFocus
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search..."
-              className="w-full bg-transparent outline-none"
-            />
-            <SearchSuggestions
-              isOpen={isSearchOpen}
-              query={searchQuery}
-              suggestions={filteredProducts}
-              onSuggestionClick={(p) => {
-                navigate(`/product/${p.id}`);
-                setIsSearchOpen(false);
-              }}
-            />
+      {/* MOBILE NAVBAR */}
+      <div className={`fixed top-0 inset-x-0 z-50 md:hidden transition-all duration-500 ${scrolled ? 'h-16 bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-xl border-b dark:border-white/5' : 'h-20 bg-transparent'}`}>
+        <div className="h-full px-5 flex items-center justify-between">
+          <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
+            <span className="text-[20px] font-black text-text-primary dark:text-white">Mobixa</span>
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-blue-500/10 text-text-primary dark:text-white"
+            >
+              <Search size={18} />
+            </button>
+            
+            <button
+              id="cart-icon-mobile"
+              onClick={() => setIsCartOpen(true)}
+              className="relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-blue-500/10 text-text-primary dark:text-white"
+            >
+              <ShoppingCart size={18} />
+              {cartCount > 0 && (
+                <span className="absolute top-2 right-2 w-4 h-4 bg-blue-500 text-white text-[8px] flex items-center justify-center rounded-full">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-text-primary dark:bg-white text-white dark:text-text-primary ml-1"
+            >
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
-      )}
+      </div>
+
+      {/* MOBILE MENU OVERLAY */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[55] md:hidden"
+            />
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed right-0 top-0 bottom-0 w-[280px] bg-white dark:bg-[#09090b] z-[60] md:hidden shadow-2xl flex flex-col"
+            >
+              <div className="p-8 pt-24 space-y-8 flex-1">
+                <div className="space-y-4">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-text-secondary dark:text-gray-500">Navigation</p>
+                  <div className="flex flex-col gap-4">
+                    {nav.map(({ label, to }) => (
+                      <Link 
+                        key={label} 
+                        to={to} 
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-between group"
+                      >
+                        <span className="text-2xl font-black text-text-primary dark:text-white">{label}</span>
+                        <ChevronRight size={20} className="text-text-secondary opacity-0 group-hover:opacity-100 transition-all" />
+                      </Link>
+                    ))}
+                    <Link 
+                      to="/wishlist" 
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-between group"
+                    >
+                      <span className="text-2xl font-black text-text-primary dark:text-white">Wishlist</span>
+                      <div className="flex items-center gap-2">
+                        {wishlist.length > 0 && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
+                        <ChevronRight size={20} className="text-text-secondary opacity-0 group-hover:opacity-100 transition-all" />
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="space-y-4 pt-8 border-t dark:border-white/5">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-text-secondary dark:text-gray-500">Settings</p>
+                  <button 
+                    onClick={() => { toggleDarkMode(); setIsMobileMenuOpen(false); }}
+                    className="flex items-center gap-4 text-text-primary dark:text-white font-bold"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-white/5 flex items-center justify-center">
+                      {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                    </div>
+                    {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-8 bg-slate-50 dark:bg-white/[0.02] border-t dark:border-white/5">
+                {user ? (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white dark:border-white/10 shadow-sm">
+                        {user.profileImage ? (
+                          <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full bg-blue-600 flex items-center justify-center text-white font-bold">{user.name?.charAt(0)}</div>
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-bold text-text-primary dark:text-white leading-none">{user.name}</p>
+                        <p className="text-xs text-text-secondary dark:text-gray-500 mt-1">Active Session</p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <Link 
+                        to="/profile" 
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-center gap-2 py-3 bg-white dark:bg-white/5 border dark:border-white/10 rounded-xl text-xs font-bold"
+                      >
+                        <User size={14} /> Profile
+                      </Link>
+                      <Link 
+                        to="/my-orders" 
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-center gap-2 py-3 bg-white dark:bg-white/5 border dark:border-white/10 rounded-xl text-xs font-bold"
+                      >
+                        Orders
+                      </Link>
+                      <button 
+                        onClick={() => { logout(); setIsMobileMenuOpen(false); }}
+                        className="flex items-center justify-center gap-2 py-3 bg-red-50 dark:bg-red-500/10 text-red-600 rounded-xl text-xs font-bold"
+                      >
+                        <LogOut size={14} /> Logout
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button className="w-full h-14 rounded-2xl">Login to Mobixa</Button>
+                  </Link>
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* SEARCH PANEL */}
+      <AnimatePresence>
+        {isSearchOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-20 md:top-24 inset-x-0 z-[100] flex justify-center px-4"
+          >
+            <div className="w-full max-w-xl bg-white dark:bg-[#111] rounded-[24px] p-4 shadow-2xl border dark:border-white/10">
+              <div className="flex items-center gap-3 mb-4">
+                <Search size={20} className="text-text-secondary" />
+                <input
+                  autoFocus
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="What are you looking for?"
+                  className="w-full bg-transparent outline-none text-lg font-medium dark:text-white"
+                />
+                <button onClick={() => setIsSearchOpen(false)}>
+                  <X size={20} className="text-text-secondary" />
+                </button>
+              </div>
+              <SearchSuggestions
+                isOpen={isSearchOpen}
+                query={searchQuery}
+                suggestions={filteredProducts}
+                onSuggestionClick={(p) => {
+                  navigate(`/product/${p.id}`);
+                  setIsSearchOpen(false);
+                }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
