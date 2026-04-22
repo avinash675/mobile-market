@@ -15,6 +15,9 @@ const PaymentMethods = ({
   const [upiId, setUpiId] = useState('');
   const [upiTab, setUpiTab] = useState('apps'); // 'apps' | 'qr'
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
+  const [isVerifyingUpi, setIsVerifyingUpi] = useState(false);
+  const [verifiedUpiName, setVerifiedUpiName] = useState('');
+  const [upiError, setUpiError] = useState('');
 
   useEffect(() => {
     if (selectedMethod === 'upi' && upiTab === 'qr') {
@@ -24,6 +27,47 @@ const PaymentMethods = ({
       return () => clearInterval(timer);
     }
   }, [selectedMethod, upiTab]);
+
+  // Notify parent of validity changes
+  useEffect(() => {
+    if (selectedMethod === 'upi') {
+      if (upiTab === 'qr') {
+        onSelectBank('READY'); // Using bank as a proxy for readiness or we can add a new prop
+      } else if (selectedUpiApp) {
+        onSelectBank('READY');
+      } else if (verifiedUpiName && !upiError) {
+        onSelectBank('READY');
+      } else {
+        onSelectBank(null);
+      }
+    }
+  }, [selectedMethod, upiTab, selectedUpiApp, verifiedUpiName, upiError, onSelectBank]);
+
+  const handleUpiIdChange = async (val) => {
+    setUpiId(val);
+    setVerifiedUpiName('');
+    setUpiError('');
+    setSelectedUpiApp(null); // Deselect app if manual entry starts
+
+    const upiRegex = /^[\w.-]+@[\w.-]+$/;
+    if (upiRegex.test(val)) {
+      setIsVerifyingUpi(true);
+      // Simulate API verification
+      setTimeout(() => {
+        setIsVerifyingUpi(false);
+        setVerifiedUpiName('Avinash Goru'); // Mock name
+      }, 1500);
+    } else if (val.length > 5 && !val.includes('@')) {
+      setUpiError('Invalid UPI format (e.g. user@upi)');
+    }
+  };
+
+  const handleAppSelect = (appId) => {
+    setSelectedUpiApp(appId);
+    setUpiId('');
+    setVerifiedUpiName('');
+    setUpiError('');
+  };
 
   const upiApps = [
     { id: 'gpay', name: 'Google Pay', iconText: 'G', iconColor: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-500/10', borderActive: 'border-blue-600 dark:border-blue-500' },
@@ -64,7 +108,7 @@ const PaymentMethods = ({
         ].map((method) => (
           <button
             key={method.id}
-            onClick={() => onSelect(method.id)}
+            onClick={() => { onSelect(method.id); onSelectBank(null); }}
             className={`p-6 rounded-xl border flex flex-col items-center gap-3 transition-all duration-300 ${
               selectedMethod === method.id 
                 ? 'border-blue-600 dark:border-blue-500 bg-blue-500/10 text-blue-600 dark:text-blue-500 shadow-lg shadow-blue-500/20 scale-105' 
@@ -127,7 +171,7 @@ const PaymentMethods = ({
                       {upiApps.map((app) => (
                         <button
                           key={app.id}
-                          onClick={() => { setSelectedUpiApp(app.id); setUpiId(''); }}
+                          onClick={() => handleAppSelect(app.id)}
                           className={`
                             p-5 rounded-[20px] border transition-all duration-300 flex flex-col items-center gap-3.5 relative group
                             ${selectedUpiApp === app.id 
@@ -175,12 +219,30 @@ const PaymentMethods = ({
                         <input 
                           type="text" 
                           value={upiId}
-                          onChange={(e) => { setUpiId(e.target.value); setSelectedUpiApp(null); }}
+                          onChange={(e) => handleUpiIdChange(e.target.value)}
                           placeholder="example@upi"
-                          className={`form-input w-full pl-11 py-3.5 transition-all text-sm font-medium ${selectedUpiApp === null ? 'border-primary ring-1 ring-primary/20 bg-white dark:bg-[#09090b] shadow-md' : 'group-hover:border-text-primary/30 dark:group-hover:border-white/30'}`}
+                          className={`form-input w-full pl-11 py-3.5 transition-all text-sm font-medium ${selectedUpiApp === null ? 'border-primary ring-1 ring-primary/20 bg-white dark:bg-[#09090b] shadow-md' : 'group-hover:border-text-primary/30 dark:group-hover:border-white/30'} ${upiError ? 'border-red-500 ring-red-500/20' : ''}`}
                         />
                         <Smartphone className={`absolute left-4 top-1/2 -translate-y-1/2 ${selectedUpiApp === null ? 'text-primary' : 'text-text-secondary'} transition-colors`} size={18} strokeWidth={2} />
+                        
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                          {isVerifyingUpi && <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>}
+                          {!isVerifyingUpi && verifiedUpiName && <Check size={18} className="text-success" />}
+                        </div>
                       </div>
+                      
+                      <AnimatePresence>
+                        {upiError && (
+                          <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-red-500 font-bold mt-2 ml-1">
+                            {upiError}
+                          </motion.p>
+                        )}
+                        {!isVerifyingUpi && verifiedUpiName && (
+                          <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-[11px] text-success font-bold mt-2 ml-1 flex items-center gap-1">
+                            <Check size={12} /> UPI ID belongs to: <span className="text-text-primary dark:text-white underline">{verifiedUpiName}</span>
+                          </motion.p>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </motion.div>
                 ) : (
@@ -200,16 +262,16 @@ const PaymentMethods = ({
                         Open <span className="text-text-primary dark:text-white font-bold">Google Pay</span>, <span className="text-text-primary dark:text-white font-bold">PhonePe</span>, or <span className="text-text-primary dark:text-white font-bold">Paytm</span> to scan
                       </p>
                       
-                      <div className="relative p-3 border-2 border-dashed border-gray-200 dark:border-white/10 rounded-2xl mb-5 bg-white shadow-sm">
+                      <div className="relative p-3 border-2 border-dashed border-gray-200 dark:border-white/10 rounded-2xl mb-5 bg-white dark:bg-white/5 shadow-sm">
                         {totalAmount > 0 ? (
                           <img 
                             src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=merchant@mobixa&pn=Mobixa&am=${totalAmount}&cu=INR`} 
                             alt="UPI QR Code" 
-                            className="w-44 h-44 sm:w-52 sm:h-52 object-contain"
+                            className="w-44 h-44 sm:w-52 sm:h-52 object-contain dark:invert"
                           />
                         ) : (
-                          <div className="w-44 h-44 sm:w-52 sm:h-52 bg-gray-50 flex items-center justify-center animate-pulse rounded-xl">
-                            <QrCode size={48} className="text-gray-300" />
+                          <div className="w-44 h-44 sm:w-52 sm:h-52 bg-gray-50 dark:bg-white/5 flex items-center justify-center animate-pulse rounded-xl">
+                            <QrCode size={48} className="text-gray-300 dark:text-gray-600" />
                           </div>
                         )}
                       </div>

@@ -3,42 +3,60 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
-  const [user, setUser] = useState(null);
+  const USER_KEY = "mobixa_current_user";
+  const USERS_DB_KEY = "mobixa_users";
+
+  const [cart, setCart] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('mobixa_cart')) || [];
+    } catch (e) { return []; }
+  });
+
+  const [wishlist, setWishlist] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('mobixa_wishlist')) || [];
+    } catch (e) { return []; }
+  });
+
+  const [user, setUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(USER_KEY)) || null;
+    } catch (e) { return null; }
+  });
+
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [recentlyViewed, setRecentlyViewed] = useState([]);
+
+  const [recentlyViewed, setRecentlyViewed] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('mobixa_recent')) || [];
+    } catch (e) { return []; }
+  });
+
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
-  const [orders, setOrders] = useState([]);
+
+  const [orders, setOrders] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('mobixa_orders')) || [];
+    } catch (e) { return []; }
+  });
   const [checkoutData, setCheckoutData] = useState({
     address: null,
     paymentMethod: 'upi',
     coupon: null
   });
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return JSON.parse(localStorage.getItem('mobixa_dark_mode')) || false;
+  });
 
-  // 🔥 SINGLE SOURCE OF TRUTH
-  const USER_KEY = "mobixa_current_user";
-  const USERS_DB_KEY = "mobixa_users";
+  const [loading, setLoading] = useState(true);
 
-  // LOAD DATA
+  // Initial Sync Logic (Handled by lazy initialization above)
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('mobixa_cart')) || [];
-    const savedWishlist = JSON.parse(localStorage.getItem('mobixa_wishlist')) || [];
-    const savedRecent = JSON.parse(localStorage.getItem('mobixa_recent')) || [];
-    const savedUser = JSON.parse(localStorage.getItem(USER_KEY));
-    const savedOrders = JSON.parse(localStorage.getItem('mobixa_orders')) || [];
-    const savedDarkMode = JSON.parse(localStorage.getItem('mobixa_dark_mode')) || false;
-
-    setCart(savedCart);
-    setWishlist(savedWishlist);
-    setRecentlyViewed(savedRecent);
-    setUser(savedUser || null);
-    setOrders(savedOrders);
-    setIsDarkMode(savedDarkMode);
+    setLoading(false);
   }, []);
+
 
   // SAVE DATA
   useEffect(() => {
@@ -178,6 +196,25 @@ export const AppProvider = ({ children }) => {
 
   const toggleDarkMode = () => setIsDarkMode(prev => !prev);
 
+  // 🚚 DELIVERY ESTIMATION
+  const getDeliveryTime = useCallback((state, city) => {
+    if (!state || !city) return '3-5 Business Days';
+    const fastStates = ['Maharashtra', 'Karnataka', 'Delhi', 'Tamil Nadu', 'Telangana', 'Gujarat', 'West Bengal'];
+    if (fastStates.includes(state)) return '1-2 Business Days';
+    return '3-5 Business Days';
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-white dark:bg-[#09090b] z-[9999]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm font-bold text-slate-500 animate-pulse">Initializing Mobixa...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <AppContext.Provider value={{
       cart, addToCart, removeFromCart, updateQuantity, clearCart,
@@ -189,7 +226,8 @@ export const AppProvider = ({ children }) => {
       isProcessingOrder, setIsProcessingOrder,
       orders, addOrder,
       checkoutData, updateCheckoutData,
-      isDarkMode, toggleDarkMode
+      isDarkMode, toggleDarkMode,
+      getDeliveryTime
     }}>
       {children}
     </AppContext.Provider>

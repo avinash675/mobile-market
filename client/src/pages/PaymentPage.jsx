@@ -109,7 +109,9 @@ const PaymentPage = () => {
   const subtotal      = cart.reduce((a, b) => a + b.price * b.quantity, 0);
   const shipping      = subtotal > 50000 ? 0 : 499;
   const total         = subtotal + shipping - (checkoutData.coupon ? subtotal * 0.1 : 0);
-  const payDisabled   = checkoutData.paymentMethod === 'netbanking' && !selectedBank;
+  const payDisabled = 
+    (checkoutData.paymentMethod === 'netbanking' && !selectedBank) ||
+    (checkoutData.paymentMethod === 'upi' && selectedBank !== 'READY');
   const selectedBankData = banks.find(b => b.id === selectedBank);
 
   return (

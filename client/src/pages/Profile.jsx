@@ -87,7 +87,7 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-bgLight dark:bg-slate-950 pt-24 pb-20 sm:pt-32">
+    <div className="min-h-screen bg-bgLight dark:bg-[#09090b] pt-24 pb-20 sm:pt-32">
       <div className="max-w-6xl mx-auto px-6">
         
         {/* Header Section */}
@@ -207,21 +207,21 @@ const Profile = () => {
                       <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 dark:bg-blue-500/10 mb-4">
                         <ShoppingBag size={24} />
                       </div>
-                      <span className="text-xs font-black uppercase tracking-widest text-text-secondary mb-1">Orders</span>
+                      <span className="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1">Orders</span>
                       <span className="text-3xl font-black dark:text-white">{orders.length}</span>
                     </div>
                     <div className="glass-panel p-6 flex flex-col items-center justify-center text-center">
                       <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center text-red-600 dark:bg-red-500/10 mb-4">
                         <Heart size={24} />
                       </div>
-                      <span className="text-xs font-black uppercase tracking-widest text-text-secondary mb-1">Wishlist</span>
+                      <span className="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1">Wishlist</span>
                       <span className="text-3xl font-black dark:text-white">{wishlist.length}</span>
                     </div>
                     <div className="glass-panel p-6 flex flex-col items-center justify-center text-center">
                       <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 dark:bg-amber-500/10 mb-4">
                         <Package size={24} />
                       </div>
-                      <span className="text-xs font-black uppercase tracking-widest text-text-secondary mb-1">Returns</span>
+                      <span className="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1">Returns</span>
                       <span className="text-3xl font-black dark:text-white">0</span>
                     </div>
                   </div>
@@ -401,7 +401,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-textMuted dark:text-white/40 ml-1">Full Name</label>
+            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 ml-1">Full Name</label>
             <input 
               type="text"
               value={formData.name}
@@ -412,7 +412,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-textMuted dark:text-white/40 ml-1">Email Address</label>
+            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 ml-1">Email Address</label>
             <input 
               type="email"
               value={formData.email}
@@ -423,7 +423,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-textMuted dark:text-white/40 ml-1">Phone Number</label>
+            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 ml-1">Phone Number</label>
             <input 
               type="tel"
               value={formData.phone}

@@ -32,19 +32,28 @@ const MapAddressPicker = ({ isOpen, onClose, onSelectAddress }) => {
   
   const handleReverseGeocode = async (lat, lng) => {
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`);
       const data = await res.json();
       if (data && data.address) {
         const addr = data.address;
+        
+        // Detailed extraction for premium accuracy
+        const road = addr.road || addr.suburb || addr.neighbourhood || '';
+        const houseNumber = addr.house_number || '';
+        const area = addr.suburb || addr.city_district || addr.neighbourhood || '';
+        
+        const formattedLabel = data.display_name;
+        const shortAddress = [houseNumber, road, area].filter(Boolean).join(', ') || formattedLabel.split(',').slice(0, 2).join(', ');
+
         const formatted = {
-          label: data.display_name,
-          address: data.display_name.split(',').slice(0, 2).join(','),
-          city: addr.city || addr.town || addr.village || addr.district || '',
+          label: formattedLabel,
+          address: shortAddress,
+          city: addr.city || addr.town || addr.village || addr.municipality || addr.district || '',
           state: addr.state || '',
           pincode: addr.postcode || ''
         };
         setSelectedAddress(formatted);
-        setSearch(data.display_name.split(',')[0]);
+        setSearch(shortAddress);
       }
     } catch (err) {
       console.error("Geocoding error", err);

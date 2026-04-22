@@ -7,7 +7,7 @@ import Button from './common/Button';
 
 const HeroSection = () => {
   return (
-    <section className="relative bg-white dark:bg-[#050505] pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden transition-colors duration-300">
+    <section className="relative bg-white dark:bg-[#09090b] pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden transition-colors duration-300">
       {/* Premium Background Depth */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <div className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-blue-500/[0.02] dark:bg-blue-500/[0.04] rounded-full blur-[120px] absolute -top-1/4 -right-1/4 mix-blend-screen" />
@@ -32,7 +32,7 @@ const HeroSection = () => {
             >
               <div className="flex items-center -space-x-2">
                 {[1,2,3,4].map(i => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-[#050505] bg-gray-200 dark:bg-gray-800 flex items-center justify-center overflow-hidden z-10" style={{ zIndex: 10 - i }}>
+                  <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-[#09090b] bg-gray-200 dark:bg-gray-800 flex items-center justify-center overflow-hidden z-10" style={{ zIndex: 10 - i }}>
                     <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" className="w-full h-full object-cover" />
                   </div>
                 ))}

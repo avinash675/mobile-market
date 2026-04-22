@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
@@ -12,6 +13,10 @@ import { products } from '../data/products';
 
 const Shop = () => {
   const { searchQuery } = useAppContext();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const type = query.get("type");
+
   const [activeFilters, setActiveFilters] = useState({
     brand: [],
     condition: [],
@@ -49,7 +54,20 @@ const Shop = () => {
 
   // Filtering Logic
   const filteredProducts = useMemo(() => {
-    const result = products
+    let result = [...products];
+
+    // --- Dynamic Type Filtering (from Explore Cards) ---
+    if (type === "affordable") {
+      result = result.filter(p => p.price < 30000);
+    } else if (type === "deals") {
+      result = result.filter(p => p.discount);
+    } else if (type === "budget") {
+      result = result.filter(p => ['Xiaomi', 'Realme', 'Oppo', 'iQOO', 'Vivo'].includes(p.brand));
+    } else if (type === "online") {
+      result = result.filter(p => p.isPopular || p.stock < 10);
+    }
+
+    return result
       .filter(product => {
         const brandMatch = activeFilters.brand.length === 0 || 
           activeFilters.brand.some(b => b.toLowerCase().trim() === product.brand.toLowerCase().trim());
@@ -70,8 +88,28 @@ const Shop = () => {
         return b.year - a.year || b.id - a.id;
       });
 
-    return result;
-  }, [activeFilters, sortBy, searchQuery, currentYear]);
+
+  }, [activeFilters, sortBy, searchQuery, currentYear, type]);
+
+  const getPageHeading = () => {
+    switch (type) {
+      case 'affordable': return <>Affordable <span className="italic">Phones.</span></>;
+      case 'deals':      return <>Best <span className="italic">Deals.</span></>;
+      case 'budget':     return <>Budget <span className="italic">Brands.</span></>;
+      case 'online':     return <>Online <span className="italic">Exclusives.</span></>;
+      default:           return <>Discover <span className="italic">Tech.</span></>;
+    }
+  };
+
+  const getPageSubheading = () => {
+    switch (type) {
+      case 'affordable': return 'Top-tier performance at entry-level prices. Verified quality guaranteed.';
+      case 'deals':      return 'Exclusive limited-time offers and deep discounts on your favorite models.';
+      case 'budget':     return 'Trusted value-for-money brands that don\'t compromise on experience.';
+      case 'online':     return 'Premium stock and popular choices available instantly for online delivery.';
+      default:           return 'Explore our laboratory-certified collection of premium refurbished smartphones.';
+    }
+  };
 
 
   const toggleFilter = (type, value) => {
@@ -85,16 +123,16 @@ const Shop = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background transition-colors duration-500">
+    <div className="min-h-screen bg-bgLight dark:bg-[#09090b] transition-colors duration-500">
       <div className="container-custom pt-32 md:pt-36 lg:pt-44 pb-24">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-start justify-between mb-16 gap-6 px-4">
           <div className="flex flex-col items-start text-left">
             <h1 className="text-[44px] sm:text-[56px] lg:text-[64px] font-black text-text-primary dark:text-white tracking-tight leading-[1.1] mb-5">
-              Discover <span className="text-text-primary dark:text-white italic">Tech.</span>
+              {getPageHeading()}
             </h1>
             <p className="text-[17px] sm:text-[19px] text-text-secondary dark:text-gray-400 font-medium leading-relaxed max-w-[500px] lg:max-w-[700px] m-0">
-              Explore our laboratory-certified collection of premium refurbished smartphones.
+              {getPageSubheading()}
             </p>
           </div>
           
@@ -112,11 +150,11 @@ const Shop = () => {
               onChange={(e) => setSortBy(e.target.value)}
               className="bg-white dark:bg-white/5 border border-border dark:border-white/10 rounded-xl px-6 py-3.5 text-[11px] font-bold uppercase tracking-widest outline-none text-primary dark:text-white cursor-pointer hover:border-cyan-500 transition-colors"
             >
-              <option value="newest">Newest Arrivals</option>
-              <option value="price-low">Price: Low-High</option>
-              <option value="price-high">Price: High-Low</option>
-              <option value="popular">Most Popular</option>
-              <option value="discount">Best Discounts</option>
+              <option value="newest" className="dark:bg-[#09090b]">Newest Arrivals</option>
+              <option value="price-low" className="dark:bg-[#09090b]">Price: Low-High</option>
+              <option value="price-high" className="dark:bg-[#09090b]">Price: High-Low</option>
+              <option value="popular" className="dark:bg-[#09090b]">Most Popular</option>
+              <option value="discount" className="dark:bg-[#09090b]">Best Discounts</option>
             </select>
           </div>
         </div>

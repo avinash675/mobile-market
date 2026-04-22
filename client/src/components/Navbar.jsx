@@ -216,7 +216,7 @@ const Navbar = () => {
                   </>
                 ) : (
                   <Link to="/login">
-                    <button className="px-4 py-2 bg-black text-white rounded-full text-sm">
+                    <button className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm">
                       Login
                     </button>
                   </Link>
@@ -408,7 +408,9 @@ const Navbar = () => {
               </div>
               <SearchSuggestions
                 isOpen={isSearchOpen}
+                onClose={() => setIsSearchOpen(false)}
                 query={searchQuery}
+                setQuery={setSearchQuery}
                 suggestions={filteredProducts}
                 onSuggestionClick={(p) => {
                   navigate(`/product/${p.id}`);

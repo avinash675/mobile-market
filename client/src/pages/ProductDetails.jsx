@@ -99,13 +99,13 @@ const ProductDetails = () => {
   const activeGallery = selectedColor ? [selectedColor.image, ...productGallery.filter(img => img !== selectedColor.image)] : productGallery;
 
   return (
-    <div className="min-h-screen bg-background pt-28 lg:pt-40 pb-32 transition-colors duration-300">
+    <div className="min-h-screen bg-bgLight dark:bg-[#09090b] pt-28 lg:pt-40 pb-32 transition-colors duration-300">
 
       {/* Breadcrumb */}
-      <div className="container-custom pt-8 pb-10 text-sm text-gray-500 flex gap-2">
+      <div className="container-custom pt-8 pb-10 text-sm text-text-secondary dark:text-gray-400 flex gap-2">
         <Link to="/">Home</Link>
         <ChevronRight size={14} />
-        <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
+        <Link to="/shop" className="hover:text-primary dark:hover:text-white transition-colors">Shop</Link>
         <ChevronRight size={14} />
         <span className="text-black dark:text-white font-bold">{product.name}</span>
       </div>
@@ -231,8 +231,8 @@ const ProductDetails = () => {
               onClick={() => toggleWishlist(product)}
               className={`w-14 h-14 flex items-center justify-center rounded-2xl border-2 transition-all duration-300 ${
                 isWishlisted 
-                  ? "border-red-100 bg-red-50 text-red-500" 
-                  : "border-slate-100 text-secondary hover:border-slate-300"
+                  ? "border-red-100 dark:border-red-900/30 bg-red-50 dark:bg-red-500/10 text-red-500" 
+                  : "border-slate-100 dark:border-white/5 text-secondary dark:text-gray-400 hover:border-slate-300 dark:hover:border-white/20"
               }`}
             >
               <Heart size={20} fill={isWishlisted ? "currentColor" : "none"} />
@@ -264,37 +264,37 @@ const ProductDetails = () => {
             </div>
           )}
 
-          {/* Delivery & Warranty */}
-          <div className="grid grid-cols-3 gap-4 pt-8 border-t border-slate-100">
+           {/* Delivery & Warranty */}
+          <div className="grid grid-cols-3 gap-4 pt-8 border-t border-slate-100 dark:border-white/5">
             <div className="text-center group">
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-2 transition-colors group-hover:bg-blue-600 group-hover:text-white">
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto mb-2 transition-colors group-hover:bg-blue-600 group-hover:text-white">
                 <ShieldCheck size={20} />
               </div>
-              <p className="text-[10px] font-black uppercase tracking-widest">Warranty</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-primary dark:text-white">Warranty</p>
             </div>
             <div className="text-center group">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-2 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-2 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
                 <Truck size={20} />
               </div>
-              <p className="text-[10px] font-black uppercase tracking-widest">Free Ship</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-primary dark:text-white">Free Ship</p>
             </div>
             <div className="text-center group">
-              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-2 transition-colors group-hover:bg-amber-600 group-hover:text-white">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-2 transition-colors group-hover:bg-amber-600 group-hover:text-white">
                 <RotateCcw size={20} />
               </div>
-              <p className="text-[10px] font-black uppercase tracking-widest">Easy Return</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-primary dark:text-white">Easy Return</p>
             </div>
           </div>
 
-          {/* Full Technical Specs */}
+           {/* Full Technical Specs */}
           {product.technicalSpecs && (
             <div className="pt-10">
-              <h3 className="text-[12px] font-black uppercase tracking-[0.15em] text-secondary mb-4">Manufacturer Details</h3>
+              <h3 className="text-[12px] font-black uppercase tracking-[0.15em] text-text-secondary dark:text-gray-400 mb-4">Manufacturer Details</h3>
               <div className="space-y-3">
                 {product.technicalSpecs.map((spec, i) => (
-                  <div key={i} className="flex justify-between items-center text-sm border-b border-slate-50 pb-3 last:border-0">
-                    <span className="font-bold text-secondary">{spec.label}</span>
-                    <span className="font-medium text-primary">{spec.value}</span>
+                  <div key={i} className="flex justify-between items-center text-sm border-b border-slate-50 dark:border-white/5 pb-3 last:border-0">
+                    <span className="font-bold text-text-secondary dark:text-gray-400">{spec.label}</span>
+                    <span className="font-medium text-text-primary dark:text-white">{spec.value}</span>
                   </div>
                 ))}
               </div>
@@ -309,9 +309,9 @@ const ProductDetails = () => {
         <div className="flex flex-col lg:flex-row gap-16">
           {/* Left: Summary */}
           <div className="lg:w-1/3">
-            <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
+            <h2 className="text-2xl font-bold mb-6 text-text-primary dark:text-white">Customer Reviews</h2>
             <div className="p-8 bg-slate-50 dark:bg-white/[0.03] rounded-[32px] border border-slate-100 dark:border-white/5 text-center">
-              <div className="text-5xl font-black text-primary mb-2">{product.rating}</div>
+              <div className="text-5xl font-black text-text-primary dark:text-white mb-2">{product.rating}</div>
               <div className="flex justify-center text-yellow-500 mb-2">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={20} fill={i < Math.floor(product.rating) ? "currentColor" : "none"} />
@@ -325,17 +325,17 @@ const ProductDetails = () => {
           <div className="lg:w-2/3 space-y-12">
             {/* Form */}
             <div className="p-8 bg-white dark:bg-[#111113] rounded-[32px] border border-slate-100 dark:border-white/5 shadow-sm max-w-2xl mx-auto lg:mx-0">
-              <h3 className="text-lg font-bold mb-6">Write a Review</h3>
+              <h3 className="text-lg font-bold mb-6 text-text-primary dark:text-white">Write a Review</h3>
               <form onSubmit={handleAddReview} className="space-y-6">
                 <div>
-                  <p className="text-sm font-bold text-secondary mb-3">Rating</p>
+                  <p className="text-sm font-bold text-text-secondary dark:text-gray-400 mb-3">Rating</p>
                   <div className="flex gap-2">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <button
                         key={s}
                         type="button"
                         onClick={() => setNewReview({ ...newReview, rating: s })}
-                        className={`transition-all ${newReview.rating >= s ? "text-yellow-500 scale-110" : "text-slate-200"}`}
+                        className={`transition-all ${newReview.rating >= s ? "text-yellow-500 scale-110" : "text-slate-200 dark:text-gray-700"}`}
                       >
                         <Star size={24} fill={newReview.rating >= s ? "currentColor" : "none"} />
                       </button>
@@ -357,10 +357,10 @@ const ProductDetails = () => {
             {/* List */}
             <div className="space-y-8">
               {reviewsList.map((r) => (
-                <div key={r.id} className="pb-8 border-b border-slate-100 last:border-0">
+                <div key={r.id} className="pb-8 border-b border-slate-100 dark:border-white/5 last:border-0">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h4 className="font-bold text-primary mb-1">{r.user}</h4>
+                      <h4 className="font-bold text-text-primary dark:text-white mb-1">{r.user}</h4>
                       <div className="flex text-yellow-500 mb-2">
                         {[...Array(5)].map((_, i) => (
                           <Star key={i} size={14} fill={i < r.rating ? "currentColor" : "none"} />
@@ -368,13 +368,13 @@ const ProductDetails = () => {
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-2">
-                      <span className="text-xs text-secondary/60 font-medium">{r.date}</span>
-                      <button className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-100 transition-colors text-[10px] font-bold uppercase tracking-wider text-secondary">
+                      <span className="text-xs text-text-secondary/60 dark:text-gray-500 font-medium">{r.date}</span>
+                      <button className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-100 dark:border-white/10 transition-colors text-[10px] font-bold uppercase tracking-wider text-text-secondary dark:text-gray-400">
                         <Star size={10} /> Helpful ({r.helpful || 0})
                       </button>
                     </div>
                   </div>
-                  <p className="text-secondary leading-relaxed">{r.comment}</p>
+                  <p className="text-text-secondary dark:text-gray-400 leading-relaxed">{r.comment}</p>
                 </div>
               ))}
             </div>
@@ -386,10 +386,10 @@ const ProductDetails = () => {
       <div className="container-custom mt-24">
         <div className="flex justify-between items-end mb-8">
           <div>
-            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-600 mb-2 block">Visual Proof</span>
-            <h2 className="text-2xl lg:text-3xl font-black tracking-tight">Real Customer Experience</h2>
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 mb-2 block">Visual Proof</span>
+            <h2 className="text-2xl lg:text-3xl font-black tracking-tight text-text-primary dark:text-white">Real Customer Experience</h2>
           </div>
-          <button className="hidden sm:block text-[11px] font-black uppercase tracking-widest text-primary hover:text-blue-600 transition-colors border-b-2 border-primary hover:border-blue-600 pb-0.5">
+          <button className="hidden sm:block text-[11px] font-black uppercase tracking-widest text-text-primary dark:text-white hover:text-blue-600 transition-colors border-b-2 border-text-primary dark:border-white hover:border-blue-600 pb-0.5">
             Share Your Photo
           </button>
         </div>
@@ -401,7 +401,7 @@ const ProductDetails = () => {
               className="group relative cursor-pointer"
               onClick={() => setSelectedPhoto(photo)}
             >
-              <div className="aspect-square rounded-[32px] overflow-hidden border border-slate-100 shadow-sm mb-4">
+              <div className="aspect-square rounded-[32px] overflow-hidden border border-slate-100 dark:border-white/5 shadow-sm mb-4">
                 <SafeImage
                   src={photo.image}
                   alt={photo.caption}
@@ -417,12 +417,12 @@ const ProductDetails = () => {
               
               <div className="px-2">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm font-bold text-primary">{photo.user}</span>
-                  <button className="flex items-center gap-1 text-[10px] font-bold text-secondary hover:text-blue-600 transition-colors">
+                  <span className="text-sm font-bold text-text-primary dark:text-white">{photo.user}</span>
+                  <button className="flex items-center gap-1 text-[10px] font-bold text-text-secondary dark:text-gray-400 hover:text-blue-600 transition-colors">
                     <Heart size={10} className="fill-current" /> {photo.likes}
                   </button>
                 </div>
-                <p className="text-[12px] text-secondary leading-tight line-clamp-1">{photo.caption}</p>
+                <p className="text-[12px] text-text-secondary dark:text-gray-500 leading-tight line-clamp-1">{photo.caption}</p>
               </div>
             </div>
           ))}
@@ -459,19 +459,19 @@ const ProductDetails = () => {
 
       {/* Compare with Similar Section */}
       <div className="container-custom mt-24">
-        <h2 className="text-2xl font-bold mb-8 text-center">Compare with Similar</h2>
+        <h2 className="text-2xl font-bold mb-8 text-center text-text-primary dark:text-white">Compare with Similar</h2>
         
         {/* Horizontal Scroll Wrapper for Mobile */}
         <div className="overflow-x-auto pb-4 custom-scrollbar">
           <div className="min-w-[800px] lg:min-w-full grid grid-cols-4 border border-slate-100 dark:border-white/5 rounded-[32px] overflow-hidden bg-white dark:bg-[#111113] shadow-sm">
             
             {/* Features Column */}
-            <div className="flex flex-col border-r border-slate-100">
-              <div className="h-40 bg-slate-50/50 p-6 border-b border-slate-100 flex items-center font-bold text-secondary uppercase tracking-widest text-[11px]">Feature</div>
-              <div className="flex-1 p-6 border-b border-slate-100 font-bold text-sm flex items-center">Price</div>
-              <div className="flex-1 p-6 border-b border-slate-100 font-bold text-sm flex items-center">Camera</div>
-              <div className="flex-1 p-6 border-b border-slate-100 font-bold text-sm flex items-center">Battery</div>
-              <div className="flex-1 p-6 font-bold text-sm flex items-center">Performance</div>
+            <div className="flex flex-col border-r border-slate-100 dark:border-white/5">
+              <div className="h-40 bg-slate-50/50 dark:bg-white/[0.02] p-6 border-b border-slate-100 dark:border-white/5 flex items-center font-bold text-text-secondary dark:text-gray-400 uppercase tracking-widest text-[11px]">Feature</div>
+              <div className="flex-1 p-6 border-b border-slate-100 dark:border-white/5 font-bold text-sm flex items-center text-text-primary dark:text-white">Price</div>
+              <div className="flex-1 p-6 border-b border-slate-100 dark:border-white/5 font-bold text-sm flex items-center text-text-primary dark:text-white">Camera</div>
+              <div className="flex-1 p-6 border-b border-slate-100 dark:border-white/5 font-bold text-sm flex items-center text-text-primary dark:text-white">Battery</div>
+              <div className="flex-1 p-6 font-bold text-sm flex items-center text-text-primary dark:text-white">Performance</div>
             </div>
 
             {/* Current Product & Similar Products */}
@@ -481,9 +481,9 @@ const ProductDetails = () => {
               const performance = p.specs?.performance || (p.category === "Flagship" ? "A17 Pro / Gen 3" : "Snapdragon 8 Series");
               
               return (
-                <div key={p.id} className={`flex flex-col border-r border-slate-100 last:border-r-0 ${idx === 0 ? "bg-slate-50/40" : ""}`}>
+                <div key={p.id} className={`flex flex-col border-r border-slate-100 dark:border-white/5 last:border-r-0 ${idx === 0 ? "bg-slate-50/40 dark:bg-white/[0.03]" : ""}`}>
                   {/* Header: Product Info */}
-                  <div className="h-40 p-6 border-b border-slate-100 flex flex-col items-center justify-center text-center space-y-2">
+                  <div className="h-40 p-6 border-b border-slate-100 dark:border-white/5 flex flex-col items-center justify-center text-center space-y-2">
                     <SafeImage 
                       src={p.image} 
                       alt={p.name} 
@@ -491,8 +491,8 @@ const ProductDetails = () => {
                       containerClassName="w-16 h-16 mb-1"
                       className="w-full h-full object-contain" 
                     />
-                    <h3 className="font-bold text-xs truncate w-full">{p.name}</h3>
-                    {idx === 0 && <span className="text-[10px] font-black uppercase tracking-tighter text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Current</span>}
+                    <h3 className="font-bold text-xs truncate w-full text-text-primary dark:text-white">{p.name}</h3>
+                    {idx === 0 && <span className="text-[10px] font-black uppercase tracking-tighter text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded-full">Current</span>}
                   </div>
 
                   <div className="flex-1 p-6 border-b border-slate-100 dark:border-white/5 flex items-center justify-center font-black text-text-primary dark:text-white">
@@ -500,25 +500,25 @@ const ProductDetails = () => {
                   </div>
 
                   {/* Camera */}
-                  <div className="flex-1 p-6 border-b border-slate-100 flex items-center justify-center text-center text-[11px] text-secondary font-bold uppercase tracking-tight">
+                  <div className="flex-1 p-6 border-b border-slate-100 dark:border-white/5 flex items-center justify-center text-center text-[11px] text-text-secondary dark:text-gray-400 font-bold uppercase tracking-tight">
                     {cameraSpec}
                   </div>
 
                   {/* Battery */}
-                  <div className="flex-1 p-6 border-b border-slate-100 flex items-center justify-center text-center text-[11px] text-secondary font-bold uppercase tracking-tight">
+                  <div className="flex-1 p-6 border-b border-slate-100 dark:border-white/5 flex items-center justify-center text-center text-[11px] text-text-secondary dark:text-gray-400 font-bold uppercase tracking-tight">
                     {batterySpec}
                   </div>
 
                   {/* Performance */}
                   <div className="flex-1 p-6 flex flex-col items-center justify-center space-y-4">
-                    <span className="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest text-secondary text-center">
+                    <span className="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest text-text-secondary dark:text-gray-400 text-center">
                       {performance}
                     </span>
 
                     {/* View Button (for similar products) */}
                     {idx !== 0 && (
                       <Link to={`/product/${p.id}`}>
-                        <button className="text-[11px] font-black uppercase tracking-widest text-primary hover:text-blue-600 transition-colors border-b-2 border-primary hover:border-blue-600 pb-0.5">
+                        <button className="text-[11px] font-black uppercase tracking-widest text-text-primary dark:text-white hover:text-blue-600 transition-colors border-b-2 border-text-primary dark:border-white hover:border-blue-600 pb-0.5">
                           View
                         </button>
                       </Link>

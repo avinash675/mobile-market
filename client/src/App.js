@@ -124,7 +124,7 @@ const App = () => {
   );
 
   return (
-    <div className="min-h-screen bg-bgLight dark:bg-slate-950 text-textDark dark:text-white font-sans antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-bgLight dark:bg-[#09090b] text-textDark dark:text-white font-sans antialiased transition-colors duration-300">
       <ScrollToTop />
       
       {/* Global floating UI elements */}

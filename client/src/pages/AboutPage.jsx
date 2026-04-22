@@ -9,7 +9,7 @@ const AboutPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-bgLight dark:bg-slate-950 pt-24 pb-20 text-slate-900 dark:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-bgLight dark:bg-[#09090b] pt-24 pb-20 text-slate-900 dark:text-white transition-colors duration-300">
       
       {/* Hero / Header for About Page */}
       <div className="pt-32 pb-16 px-6 border-b border-slate-100 dark:border-white/5">

@@ -25,7 +25,7 @@ const Wishlist = () => {
   const { wishlist, toggleWishlist, addToCart } = useAppContext();
 
   return (
-    <div className="min-h-screen bg-bgLight dark:bg-base-950 pt-32 pb-20">
+    <div className="min-h-screen bg-bgLight dark:bg-[#09090b] pt-32 pb-20">
 
       <main className="pb-24 max-w-7xl mx-auto px-6">
         {/* Header */}
@@ -37,7 +37,7 @@ const Wishlist = () => {
         >
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-textMuted dark:text-white/40 hover:text-textDark dark:hover:text-white font-bold text-sm mb-6 group transition-colors duration-200"
+            className="inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-bold text-sm mb-6 group transition-colors duration-200"
           >
             <ChevronLeft size={16} className="group-hover:-translate-x-0.5 transition-transform duration-200" />
             Back to Store
@@ -47,7 +47,7 @@ const Wishlist = () => {
               <h1 className="text-5xl font-black text-textDark dark:text-white tracking-tightest mb-2">
                 Wishlist
               </h1>
-              <p className="text-textMuted dark:text-white/40 font-medium">
+              <p className="text-slate-500 dark:text-slate-400 font-medium">
                 {wishlist.length > 0
                   ? `${wishlist.length} ${wishlist.length === 1 ? 'device' : 'devices'} saved`
                   : 'No items saved yet'}
@@ -78,7 +78,7 @@ const Wishlist = () => {
             <h2 className="text-2xl font-black text-textDark dark:text-white mb-3 tracking-tight">
               Nothing saved yet
             </h2>
-            <p className="text-textMuted dark:text-white/40 max-w-sm mb-8 leading-relaxed font-medium text-sm">
+            <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-8 leading-relaxed font-medium text-sm">
               Tap the heart icon on any product to save it here for later.
             </p>
             <Link to="/">
@@ -130,13 +130,13 @@ const Wishlist = () => {
 
                   {/* Info */}
                   <div className="p-5">
-                    <p className="text-[10px] font-black text-textLight dark:text-white/30 uppercase tracking-[0.2em] mb-1">
+                    <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-1">
                       {product.brand}
                     </p>
-                    <h3 className="font-black text-textDark dark:text-white text-sm mb-1 line-clamp-1 tracking-tight group-hover:text-accent transition-colors duration-200">
+                    <h3 className="font-black text-slate-900 dark:text-white text-sm mb-1 line-clamp-1 tracking-tight group-hover:text-accent transition-colors duration-200">
                       {product.name}
                     </h3>
-                    <p className="text-[10px] text-textLight dark:text-white/30 font-bold uppercase tracking-widest mb-5">
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest mb-5">
                       {product.storage} · {product.condition}
                     </p>
 

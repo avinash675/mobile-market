@@ -8,10 +8,10 @@ const AddressCard = ({ address, isSelected, onSelect, onDelete, onEdit }) => {
       whileHover={{ y: -4, shadow: '0 20px 25px -5px rgba(0, 0, 0, 0.05)' }}
       onClick={() => onSelect(address)}
       className={`
-        group relative p-6 rounded-[24px] border-2 cursor-pointer transition-all duration-300 bg-white
+        group relative p-6 rounded-[24px] border-2 cursor-pointer transition-all duration-300 bg-white dark:bg-white/[0.02]
         ${isSelected 
           ? 'border-accent shadow-premium ring-4 ring-accent/5' 
-          : 'border-slate-100 hover:border-slate-200'
+          : 'border-slate-100 dark:border-white/5 hover:border-slate-200'
         }
       `}
     >
@@ -26,20 +26,20 @@ const AddressCard = ({ address, isSelected, onSelect, onDelete, onEdit }) => {
       )}
 
       <div className="flex items-start gap-4">
-        <div className={`p-3 rounded-xl ${isSelected ? 'bg-accent/10 text-accent' : 'bg-slate-50 text-secondary'}`}>
+        <div className={`p-3 rounded-xl ${isSelected ? 'bg-accent/10 text-accent' : 'bg-slate-50 dark:bg-white/5 text-secondary dark:text-gray-400'}`}>
           <MapPin size={20} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-             <h4 className="text-sm font-bold text-primary uppercase tracking-tight truncate">{address.fullName}</h4>
-             <span className="text-[8px] font-bold uppercase tracking-widest px-2 py-1 bg-slate-50 rounded-md text-secondary">
+             <h4 className="text-sm font-bold text-primary dark:text-white uppercase tracking-tight truncate">{address.fullName}</h4>
+             <span className="text-[8px] font-bold uppercase tracking-widest px-2 py-1 bg-slate-50 dark:bg-white/5 rounded-md text-secondary dark:text-gray-400">
                {address.type || 'Home'}
              </span>
           </div>
-          <p className="text-xs text-secondary font-medium leading-relaxed mb-4 line-clamp-2 italic">
+          <p className="text-xs text-secondary dark:text-gray-400 font-medium leading-relaxed mb-4 line-clamp-2 italic">
             {address.address}, {address.city}, {address.state} - {address.pincode}
           </p>
-          <div className="flex items-center gap-2 text-primary">
+          <div className="flex items-center gap-2 text-primary dark:text-white">
              <Phone size={12} className="text-accent" />
              <span className="text-[10px] font-bold tracking-widest">{address.phone}</span>
           </div>
@@ -48,12 +48,12 @@ const AddressCard = ({ address, isSelected, onSelect, onDelete, onEdit }) => {
 
       <div className="absolute bottom-6 right-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
          {onEdit && (
-           <button onClick={(e) => { e.stopPropagation(); onEdit(address); }} className="p-2 hover:bg-slate-50 rounded-lg text-secondary hover:text-accent transition-colors">
+           <button onClick={(e) => { e.stopPropagation(); onEdit(address); }} className="p-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg text-secondary dark:text-gray-400 hover:text-accent transition-colors">
              <Edit2 size={14} />
            </button>
          )}
          {onDelete && (
-           <button onClick={(e) => { e.stopPropagation(); onDelete(address.id); }} className="p-2 hover:bg-slate-50 rounded-lg text-secondary hover:text-red-500 transition-colors">
+           <button onClick={(e) => { e.stopPropagation(); onDelete(address.id); }} className="p-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg text-secondary dark:text-gray-400 hover:text-red-500 transition-colors">
              <Trash2 size={14} />
            </button>
          )}
