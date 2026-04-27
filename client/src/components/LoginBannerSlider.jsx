@@ -2,33 +2,32 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { motion } from 'framer-motion';
-import iphoneImg from '../assets/images/iphone.png';
-import samsungImg from '../assets/images/samsung.png';
-import pixelImg from '../assets/images/pixel.png';
 
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 const banners = [
   {
-    title: "iPhone 15 Pro",
-    subtitle: "Experience the Future of Mobile Computing",
-    image: iphoneImg, 
-    gradient: "from-blue-600/40 via-transparent to-transparent"
+    title: "Premium Experience",
+    subtitle: "Shop Smart. Shop Mobixa.",
+    image: "https://res.cloudinary.com/dx40399gl/image/upload/v1777300740/ChatGPT_Image_Apr_27_2026_08_08_18_PM_xuvfaz.png", // ✅ NEW IMAGE
+    gradient: "from-blue-600/40 via-transparent to-transparent",
+    contain: true
   },
   {
-    title: "Galaxy Flagships",
-    subtitle: "Unmatched Performance, Certified Refurbished",
-    image: samsungImg, 
-    gradient: "from-purple-600/40 via-transparent to-transparent"
+    title: "Best Deals Online",
+    subtitle: "Grab the hottest deals today",
+    image: "https://res.cloudinary.com/dx40399gl/image/upload/v1777300807/vivo-v50e-vivo-mobile-phone-large-1_apgxcl.avif", // ✅ NEW IMAGE
+    gradient: "from-purple-600/40 via-transparent to-transparent",
+    contain: true
   },
   {
-    title: "The Pixel Way",
-    subtitle: "Smartest Software on Cleanest Hardware",
-    image: pixelImg, 
-    gradient: "from-accent/40 via-transparent to-transparent"
+    title: "Trusted Quality",
+    subtitle: "Only the best for you",
+    image: "https://res.cloudinary.com/dx40399gl/image/upload/v1777299836/WhatsApp_Image_2026-03-16_at_9.40.11_PM_iihdbj.jpg", // ✅ UNCHANGED
+    gradient: "from-accent/40 via-transparent to-transparent",
+    contain: false
   }
 ];
 
@@ -45,33 +44,44 @@ const LoginBannerSlider = () => {
       >
         {banners.map((banner, index) => (
           <SwiperSlide key={index} className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-[#020617]">
+
+            {/* Background container */}
+            <div className="absolute inset-0 bg-[#020617] flex items-center justify-center">
+
               <img 
                 src={banner.image} 
                 alt={banner.title}
-                className="w-full h-full object-cover transition-transform duration-[4000ms] ease-linear group-hover:scale-110"
+                loading="lazy"
+                className={`transition-transform duration-[4000ms] ease-linear group-hover:scale-105
+                  ${banner.contain 
+                    ? "h-full object-contain"
+                    : "w-full h-full object-cover"
+                  }`}
               />
+
+              {/* Gradient Overlay */}
               <div className={`absolute inset-0 bg-gradient-to-r ${banner.gradient} to-[#020617]/80`}></div>
             </div>
 
-            <div className="absolute inset-0 flex flex-col justify-end p-16 md:p-24 z-10">
+            {/* Text */}
+            <div className="absolute inset-0 flex flex-col justify-end p-10 md:p-16 z-10">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-5xl md:text-7xl font-black text-white leading-tight mb-4 tracking-tighter">
+                <h2 className="text-4xl md:text-6xl font-black text-white leading-tight mb-3 tracking-tight">
                   {banner.title}
                 </h2>
-                <p className="text-xl md:text-2xl text-white/60 font-medium tracking-tight">
+                <p className="text-lg md:text-xl text-white/70 font-medium">
                   {banner.subtitle}
                 </p>
               </motion.div>
             </div>
+
           </SwiperSlide>
         ))}
       </Swiper>
-
     </div>
   );
 };
